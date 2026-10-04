@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ห้องเคส FA — โจทย์เขียนตอบ IPO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600&family=Noto+Serif+Thai:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF2F6; --sheet:#FFFFFF; --ink:#14213D; --muted:#5B6B82; --rule:#C9D3E0;
+  --accent:#E3A21A; --ok:#1F7A4D; --ok-bg:#E3F3EA; --mid:#9A6A00; --mid-bg:#FBF0D6; --bad:#B4372F; --bad-bg:#FBE7E5;
+  --sel:#DCE6F5; --navy:#0B2A6B; --field:#FBFCFE;
+  --serif:"Noto Serif Thai","Thonburi",Georgia,serif;
+  --sans:"IBM Plex Sans Thai","Sarabun","Leelawadee UI",system-ui,sans-serif;
+  --hdr:62px;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0E1726; --sheet:#16233A; --ink:#E6ECF5; --muted:#9FB0C8; --rule:#2A3B57;
+    --accent:#F0B43A; --ok:#4CC38A; --ok-bg:#12352A; --mid:#F0B43A; --mid-bg:#3A2E12; --bad:#F07167; --bad-bg:#3A1C22;
+    --sel:#22365A; --navy:#9DB8F0; --field:#111C2F;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0E1726; --sheet:#16233A; --ink:#E6ECF5; --muted:#9FB0C8; --rule:#2A3B57;
+  --accent:#F0B43A; --ok:#4CC38A; --ok-bg:#12352A; --mid:#F0B43A; --mid-bg:#3A2E12; --bad:#F07167; --bad-bg:#3A1C22;
+  --sel:#22365A; --navy:#9DB8F0; --field:#111C2F;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%; scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--hdr) + 8px); -webkit-text-size-adjust:100%}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.72; min-height:100%}
+button{font:inherit; color:inherit}
+:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+h5{font-family:var(--serif); font-size:1rem; margin:18px 0 6px; color:var(--navy)}
+h5:first-child{margin-top:0}
+
+/* Header */
+.top{position:sticky; top:0; z-index:20; background:var(--paper); border-bottom:1px solid var(--rule); padding-top:env(safe-area-inset-top,0px); margin-top:calc(-1 * env(safe-area-inset-top,0px))}
+.top-in{max-width:1500px; margin:0 auto; height:var(--hdr); padding:0 18px; display:flex; gap:12px; align-items:center}
+.menu{display:none; border:1px solid var(--rule); background:var(--sheet); width:40px; height:40px; border-radius:8px; cursor:pointer; flex:none}
+.menu svg{display:block; margin:auto}
+.brand{min-width:0}
+.brand h1{font-family:var(--serif); font-size:1.2rem; margin:0; line-height:1.25; color:var(--navy); white-space:nowrap}
+.brand p{margin:0; font-size:.8rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.stats{margin-left:auto; display:flex; gap:18px; align-items:center}
+.stat{line-height:1.2; text-align:right}
+.stat b{font-family:var(--serif); font-size:1.15rem; display:block}
+.stat span{font-size:.74rem; color:var(--muted)}
+.bar{height:3px; background:var(--rule)}
+.bar span{display:block; height:100%; background:var(--accent); transition:width .3s}
+
+.btn{border:1px solid var(--ink); background:transparent; padding:8px 15px; border-radius:7px; cursor:pointer; font-weight:500; font-size:.92rem; line-height:1.3; min-height:40px}
+.btn:hover{background:var(--sel)}
+.btn.primary{background:var(--ink); color:var(--sheet)}
+.btn.primary:hover{opacity:.9; background:var(--ink)}
+.btn.ghost{border-color:var(--rule)}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+
+/* Layout */
+.layout{max-width:1500px; margin:0 auto; padding:20px 18px 60px; display:grid; grid-template-columns:250px minmax(0,1fr) minmax(0,1fr); gap:22px; align-items:start}
+.layout.sum{grid-template-columns:250px minmax(0,1fr)}
+
+/* Index */
+nav.index{position:sticky; top:calc(var(--hdr) + 22px); max-height:calc(100vh - var(--hdr) - 40px); overflow:auto; padding-right:2px}
+.grp{margin-bottom:12px}
+.grp h3{font-size:.78rem; font-weight:600; color:var(--muted); margin:0 0 3px 8px}
+.grp ol{list-style:none; margin:0; padding:0}
+.grp li button{display:flex; width:100%; text-align:left; gap:9px; align-items:baseline; padding:5px 8px; border:0; background:transparent; border-radius:6px; cursor:pointer; font-size:.88rem; line-height:1.45}
+.grp li button:hover{background:var(--sel)}
+.grp li button[aria-current="true"]{background:var(--sheet); box-shadow:inset 3px 0 0 var(--accent)}
+.grp .n{font-variant-numeric:tabular-nums; color:var(--muted); min-width:1.5em; font-size:.8rem}
+.grp .s{margin-left:auto; font-size:.74rem; font-weight:600; white-space:nowrap; color:var(--muted)}
+.s.done{color:var(--ok)} .s.wrote{color:var(--navy)}
+.drawer-head{display:none}
+.scrim{display:none}
+
+/* Panels */
+.panel{background:var(--sheet); border:1px solid var(--rule); border-radius:6px; padding:28px 30px}
+.meta{display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-size:.84rem; color:var(--muted); margin-bottom:4px}
+.tag{border:1px solid var(--rule); padding:0 9px; border-radius:20px; font-size:.76rem; color:var(--ink)}
+.title{font-family:var(--serif); font-size:1.5rem; line-height:1.4; margin:0 0 16px}
+.client{display:grid; grid-template-columns:max-content 1fr; gap:2px 14px; font-size:.9rem; padding:12px 14px; background:var(--paper); border-radius:6px; margin:0 0 18px}
+.client dt{color:var(--muted)} .client dd{margin:0; font-weight:500}
+.brief p{margin:0 0 12px}
+.tbl{overflow-x:auto; margin:10px 0 14px; -webkit-overflow-scrolling:touch}
+table{border-collapse:collapse; font-size:.88rem; min-width:100%}
+th,td{border-bottom:1px solid var(--rule); padding:6px 10px; text-align:right; white-space:nowrap; vertical-align:top}
+th:first-child,td:first-child{text-align:left; white-space:normal; min-width:150px}
+thead th{font-weight:600; color:var(--muted); border-bottom:1.5px solid var(--ink)}
+ol.plain,ul.plain{margin:0 0 12px; padding-left:1.3em}
+ul.plain{list-style:disc}
+.tasks{margin-top:22px; padding-top:16px; border-top:1px solid var(--rule)}
+.tasks h4{font-family:var(--serif); font-size:1.05rem; margin:0 0 8px}
+.tasks ol{margin:0; padding-left:1.4em}
+.tasks li{margin-bottom:6px; font-weight:500}
+.pager{display:flex; gap:10px; margin-top:22px}
+.pager .sp{flex:1}
+
+/* Work column */
+.work{position:sticky; top:calc(var(--hdr) + 22px); max-height:calc(100vh - var(--hdr) - 40px); overflow:auto; position:sticky}
+.work .panel{position:relative}
+.work h4{font-family:var(--serif); font-size:1.1rem; margin:0 0 4px}
+.work .sub{font-size:.84rem; color:var(--muted); margin:0 0 12px}
+textarea{width:100%; min-height:260px; resize:vertical; border:1px solid var(--rule); border-radius:6px; background:var(--field); color:var(--ink); font:inherit; font-size:.97rem; line-height:1.7; padding:12px 14px}
+textarea:focus{outline:2px solid var(--accent); outline-offset:0; border-color:transparent}
+.wmeta{display:flex; justify-content:space-between; font-size:.78rem; color:var(--muted); margin:6px 0 14px}
+.acts{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.model{margin-top:22px; padding-top:18px; border-top:2px solid var(--ink)}
+.model .lead{font-family:var(--serif); font-size:1.1rem; margin:0 0 10px}
+.model ul{margin:0 0 10px; padding-left:1.2em}
+.model li{margin-bottom:4px}
+.model p{margin:0 0 10px}
+.note{font-size:.82rem; color:var(--muted)}
+.rubric{margin-top:22px; padding:16px; background:var(--paper); border-radius:6px}
+.rubric h4{margin-bottom:2px}
+.ritem{padding:10px 0; border-bottom:1px solid var(--rule)}
+.ritem:last-of-type{border-bottom:0}
+.ritem p{margin:0 0 7px; font-size:.92rem}
+.ritem p small{color:var(--muted); margin-left:6px}
+.seg{display:inline-flex; border:1px solid var(--rule); border-radius:7px; overflow:hidden; background:var(--sheet)}
+.seg button{border:0; background:transparent; padding:6px 13px; cursor:pointer; font-size:.84rem; min-height:36px; border-right:1px solid var(--rule)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"][data-v="0"]{background:var(--bad-bg); color:var(--bad); font-weight:600}
+.seg button[aria-pressed="true"][data-v="1"]{background:var(--mid-bg); color:var(--mid); font-weight:600}
+.seg button[aria-pressed="true"][data-v="2"]{background:var(--ok-bg); color:var(--ok); font-weight:600}
+.total{display:flex; align-items:center; gap:10px; margin-top:12px}
+.total b{font-family:var(--serif); font-size:1.6rem}
+.total span{font-size:.84rem; color:var(--muted)}
+
+.stamp{margin-left:auto; font-family:var(--serif); font-weight:700; font-size:1.15rem; padding:2px 12px; border:3px double currentColor; border-radius:6px; transform:rotate(-8deg); opacity:.9; pointer-events:none; background:var(--sheet)}
+.stamp.hi{color:var(--ok)} .stamp.md{color:var(--mid)} .stamp.lo{color:var(--bad)}
+.stamp.fresh{animation:thump .38s cubic-bezier(.2,1.6,.4,1)}
+@keyframes thump{0%{transform:rotate(-8deg) scale(2.2); opacity:0}100%{transform:rotate(-8deg) scale(1); opacity:.9}}
+
+/* Summary */
+.big{font-family:var(--serif); font-size:3.2rem; font-weight:700; line-height:1.1; margin:4px 0}
+.big small{font-size:1.3rem; color:var(--muted); font-weight:600}
+.rows{margin:18px 0 24px}
+.row{display:grid; grid-template-columns:minmax(120px,200px) 1fr 120px; gap:12px; align-items:center; padding:8px 0; border-bottom:1px solid var(--rule); font-size:.9rem}
+.track{height:8px; background:var(--paper); border-radius:4px; overflow:hidden}
+.track span{display:block; height:100%; background:var(--ok)}
+.row b{text-align:right; font-weight:500; font-size:.84rem; color:var(--muted)}
+.clist td button{border:0; background:none; padding:0; color:var(--navy); text-decoration:underline; cursor:pointer; text-align:left; font-size:.9rem}
+
+/* Bottom bar (mobile) */
+.bottom{display:none}
+
+@media (prefers-reduced-motion:reduce){.stamp.fresh{animation:none}.bar span{transition:none}.index{transition:none!important}}
+
+/* Tablet: drawer index, two columns */
+@media (max-width:1279px){
+  .layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .layout.sum{grid-template-columns:minmax(0,1fr)}
+  .menu{display:block}
+  nav.index{position:fixed; top:0; bottom:0; left:0; width:min(320px,86vw); max-height:none; z-index:40; background:var(--sheet); border-right:1px solid var(--rule); padding:calc(env(safe-area-inset-top,0px) + 12px) 10px calc(env(safe-area-inset-bottom,0px) + 20px); transform:translateX(-102%); transition:transform .22s ease; visibility:hidden}
+  nav.index.open{transform:none; visibility:visible}
+  .drawer-head{display:flex; justify-content:space-between; align-items:center; margin:0 0 10px 8px}
+  .drawer-head b{font-family:var(--serif)}
+  .scrim.open{display:block; position:fixed; inset:0; background:rgba(10,20,40,.4); z-index:30}
+}
+/* Phone: single column */
+@media (max-width:859px){
+  :root{--hdr:56px}
+  .layout{grid-template-columns:minmax(0,1fr); padding:12px 12px calc(env(safe-area-inset-bottom,0px) + 86px); gap:12px}
+  .work{position:static; max-height:none; overflow:visible}
+  .panel{padding:20px 16px}
+  .title{font-size:1.25rem}
+  .brand h1{font-size:1.05rem}
+  .brand p{display:none}
+  .stat span{display:none}
+  .stats{gap:12px}
+  #sumBtnTop{display:none}
+  .pager{display:none}
+  .row{grid-template-columns:1fr 90px; }
+  .row .track{grid-column:1 / -1; order:3}
+  .bottom{display:flex; position:fixed; left:0; right:0; bottom:0; z-index:15; background:var(--sheet); border-top:1px solid var(--rule); padding:8px 10px calc(env(safe-area-inset-bottom,0px) + 8px); gap:8px}
+  .bottom .btn{flex:1; padding:8px 6px; font-size:.88rem}
+  .bottom .mid{flex:1.3}
+  .seg button{padding:6px 10px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <button class="menu" id="menuBtn" aria-label="เปิดรายการเคส" aria-controls="index" aria-expanded="false">
+      <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <div class="brand">
+      <h1>ห้องเคส FA</h1>
+      <p>20 เคสเขียนตอบ: จัดโครงสร้างเพื่อ IPO ขจัด COI ลด RPT</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="stWrote">0/20</b><span>เขียนแล้ว</span></div>
+      <div class="stat"><b id="stScore">0</b><span id="stScoreLbl">คะแนน</span></div>
+      <button class="btn ghost" id="sumBtnTop" data-sum>สรุปคะแนน</button>
+    </div>
+  </div>
+  <div class="bar"><span id="barFill" style="width:0"></span></div>
+</header>
+
+<div class="scrim" id="scrim"></div>
+<div class="layout" id="layout">
+  <nav class="index" id="index" aria-label="รายการเคส"></nav>
+  <section id="colA"></section>
+  <section id="colB" class="work"></section>
+</div>
+
+<div class="bottom" id="bottom">
+  <button class="btn ghost" id="bPrev">ก่อนหน้า</button>
+  <button class="btn ghost mid" id="bList">เคส 1/20</button>
+  <button class="btn ghost" id="bNext">ถัดไป</button>
+</div>
+
+<script>
+const TOPICS = {
+  screen:"คัดกรองคุณสมบัติ",
+  share:"ซื้อหุ้น / แลกหุ้น",
+  asset:"ซื้อทรัพย์สิน / เช่า",
+  transfer:"โอนกิจการ / ควบรวม",
+  group:"จัดโครงสร้างกลุ่ม",
+  coi:"COI และ RPT",
+  pre:"ผู้ถือหุ้นก่อน IPO",
+  ready:"ความพร้อมองค์กร",
+  plan:"แผน IPO ครบวงจร"
+};
+
+const CASES = [
+/* 1 */{topic:"screen", title:"ไทยเคมีภัณฑ์อยากเข้า SET ปีนี้",
+client:"บจก. ไทยเคมีภัณฑ์", biz:"ผลิตสารเคมีสำหรับระบบบำบัดน้ำ ขายให้โรงงานอุตสาหกรรม", target:"SET ปี 2569",
+brief:`<p>ผู้ถือหุ้นต้องการเข้า SET เพราะอยากได้ภาพลักษณ์ของตลาดใหญ่ ทุนชำระแล้ว 120 ลบ. ส่วนของผู้ถือหุ้น 380 ลบ. คาดว่าระดมทุน IPO ได้ราว 250 ลบ.</p>
+<div class="tbl"><table><thead><tr><th>ล้านบาท</th><th>2566</th><th>2567</th><th>2568</th></tr></thead>
+<tbody><tr><td>กำไรสุทธิตามงบการเงิน</td><td>48</td><td>52</td><td>79</td></tr></tbody></table></div>
+<p>กำไรปี 2568 รวมกำไรจากการขายเงินลงทุนในบริษัทที่ไม่เกี่ยวกับธุรกิจหลัก 6 ลบ. (หลังภาษี) ทีมผู้บริหารเป็นชุดเดิมตั้งแต่ปี 2562 ผู้ก่อตั้งดำรงตำแหน่งทั้งประธานกรรมการและกรรมการผู้จัดการ</p>`,
+tasks:["คำนวณกำไรที่ใช้พิจารณา และสรุปว่าผ่าน Profit Test ของ SET และ mai หรือไม่",
+"นอกจากเกณฑ์กำไร มีเกณฑ์ใดอีกที่เป็นอุปสรรคต่อการเข้า SET",
+"ให้คำแนะนำผู้ถือหุ้นเรื่องการเลือกตลาดและจังหวะเวลา"],
+answer:`<h5>1. กำไรที่ใช้พิจารณา</h5>
+<p>ตัดกำไรจากการขายเงินลงทุนซึ่งเป็นรายการครั้งเดียวออก กำไรปกติปี 2568 = 79 − 6 = <b>73 ลบ.</b></p>
+<ul><li><b>SET:</b> ปีล่าสุด 73 ลบ. ต่ำกว่า 75 ลบ. → ไม่ผ่าน (กำไร 2 ปีรวม 52 + 73 = 125 ลบ. อยู่ที่เส้นพอดี แต่ไม่ช่วยเพราะปีล่าสุดไม่ผ่าน)</li>
+<li><b>mai:</b> ปีล่าสุด 73 ลบ. เกิน 25 ลบ. และ 2–3 ปีรวมเกิน 40 ลบ. → ผ่าน ทุนชำระ 120 ลบ. (เกณฑ์ 50) และส่วนผู้ถือหุ้น 380 ลบ. (เกณฑ์ 100) ก็ผ่าน</li></ul>
+<h5>2. อุปสรรคอื่น</h5>
+<ul><li><b>ส่วนของผู้ถือหุ้นของ SET ต้องเกิน 800 ลบ.</b> หลัง IPO ประมาณ 380 + 250 = 630 ลบ. ยังขาดราว 170 ลบ.</li>
+<li><b>ประธานกรรมการกับผู้บริหารสูงสุดต้องไม่ใช่คนเดียวกัน</b> ข้อนี้ต้องแก้ไม่ว่าจะเลือกตลาดใด</li>
+<li>Track record และความต่อเนื่องของผู้บริหารผ่านแล้ว</li></ul>
+<h5>3. คำแนะนำ</h5>
+<p><b>ทางเลือก A — mai ปี 2569:</b> ผ่านเกณฑ์แล้ว เหลือแก้เรื่องธรรมาภิบาล ได้เงินเร็ว และย้ายไป SET ภายหลังได้เมื่อคุณสมบัติครบ</p>
+<p><b>ทางเลือก B — รอเข้า SET:</b> ต้องให้กำไรปกติปี 2569 ถึง 75 ลบ. และทำให้ส่วนผู้ถือหุ้นหลัง IPO ถึง 800 ลบ. (ระดมทุนมากขึ้นหรือสะสมกำไร) แลกกับเวลาอย่างน้อย 1 ปีและความเสี่ยงของภาวะตลาด</p>
+<p>มุมมอง FA: ถ้าบริษัทต้องการเงินทุนขยายกิจการตอนนี้ mai คุ้มกว่า ภาพลักษณ์ไม่ควรเป็นเหตุผลหลักที่ทำให้เลื่อนการระดมทุน</p>`,
+rubric:[["ตัดกำไรจากการขายเงินลงทุนออก ได้กำไรปกติปีล่าสุด 73 ลบ.",2],
+["สรุปถูกว่า SET ไม่ผ่าน (ปีล่าสุดต่ำกว่า 75) แต่ mai ผ่าน",2],
+["ระบุเกณฑ์ส่วนผู้ถือหุ้น SET 800 ลบ. และชี้ว่ายังไม่ถึง",2],
+["ระบุว่าต้องแยกประธานกรรมการกับผู้บริหารสูงสุด",2],
+["เสนอทางเลือกตลาดและจังหวะเวลา พร้อมเหตุผลเชิงธุรกิจ",2]]},
+
+/* 2 */{topic:"share", title:"ซอสดีกับบริษัทขนส่งของครอบครัว",
+client:"บจก. ซอสดี", biz:"ผลิตซอสปรุงรส", target:"SET",
+brief:`<p>บจก. ซอสดีขนส่ง (B) ขนส่งสินค้าให้ บจก. ซอสดี (A) <b>100% ของงานทั้งหมด</b> มีรถ 30 คัน และ<b>ใบอนุญาตประกอบการขนส่งออกในนามบริษัท B</b></p>
+<div class="tbl"><table><thead><tr><th>ผู้ถือหุ้น B</th><th>สัดส่วน</th></tr></thead><tbody>
+<tr><td>บิดา (ประธานกรรมการ A)</td><td>50%</td></tr><tr><td>มารดา</td><td>30%</td></tr><tr><td>บุตรชาย (CEO ของ A)</td><td>20%</td></tr></tbody></table></div>
+<p>ทุนชำระของ B 10 ลบ. (ต้นทุนของผู้ถือหุ้น) มูลค่าตามบัญชี 40 ลบ. FA ประเมินมูลค่ายุติธรรมด้วย DCF ได้ 55–65 ลบ.</p>
+<p>มีสองข้อเสนอ: ครอบครัวอยากให้ A ซื้อที่ราคาพาร์ 10 ลบ. “จะได้ไม่เสียภาษี” ส่วนกรรมการอีกคนเสนอซื้อที่ 120 ลบ. “ให้ครอบครัวได้เงินก่อนเข้าตลาด”</p>`,
+tasks:["ทำไมต้องนำ B เข้ากลุ่ม และทำไมการซื้อหุ้นเหมาะกว่าการโอนกิจการหรือซื้อทรัพย์สิน",
+"ราคาควรเป็นเท่าไร วิเคราะห์ข้อเสนอ 10, 40–65 และ 120 ลบ.",
+"ผลทางภาษีและบัญชีของการซื้อหุ้นครั้งนี้",
+"ขั้นตอนและเอกสารที่ต้องมีเพื่อให้ผ่าน Due Diligence"],
+answer:`<h5>1. ทำไมต้องเป็นการซื้อหุ้น</h5>
+<p>A พึ่งพิง B ทั้งหมด เป็น COI แนวตั้ง ครอบครัวกำหนดค่าขนส่งได้เอง (Transfer Pricing) จึงต้องนำ B เข้ากลุ่ม</p>
+<p>ใบอนุญาตขนส่งผูกกับนิติบุคคล B การ<b>ซื้อหุ้น</b>ทำให้ B ยังมีตัวตนเหมือนเดิม ใบอนุญาต สัญญา และพนักงานไม่สะดุด ส่วนการโอนกิจการหรือซื้อทรัพย์สินต้องขอใบอนุญาตใหม่และโอนรถทีละคัน</p>
+<h5>2. ราคา</h5>
+<ul><li><b>120 ลบ.:</b> สูงกว่ามูลค่ายุติธรรมเกือบเท่าตัว เป็นการถ่ายเทเงินจากบริษัทไปครอบครัวก่อน IPO ทำให้ส่วนผู้ถือหุ้นลดลงและผู้ลงทุนในอนาคตเสียประโยชน์ FA รับไม่ได้</li>
+<li><b>10 ลบ.:</b> ต่ำกว่ามูลค่าตามบัญชีมาก แม้บริษัทได้ประโยชน์ แต่ราคาไม่มีเหตุผลรองรับ อาจถูกตั้งคำถามทั้งด้านภาษีและความเป็นธุรกรรมจริง</li>
+<li><b>แนะนำ:</b> ราคาในช่วงมูลค่าตามบัญชีถึงมูลค่ายุติธรรม (40–65 ลบ.) โดยมีรายงานประเมินมูลค่ารองรับ และอธิบายเหตุผลการเลือกได้</li></ul>
+<h5>3. ภาษีและบัญชี</h5>
+<ul><li>ผู้ขายเป็นบุคคลธรรมดา กำไรจากการขายหุ้นเหนือต้นทุน 10 ลบ. เป็นเงินได้ที่ต้องเสียภาษี (เช่น ขาย 40 ลบ. มีกำไร 30 ลบ.)</li>
+<li>เป็นการรวมธุรกิจภายใต้การควบคุมเดียวกัน บันทึกตามมูลค่าตามบัญชี ไม่เกิดค่าความนิยม ส่วนต่างระหว่างราคาซื้อกับสินทรัพย์สุทธิของ B บันทึกในส่วนของผู้ถือหุ้น และปรับงบเปรียบเทียบเสมือนรวมกันตั้งแต่ต้น</li></ul>
+<h5>4. ขั้นตอน</h5>
+<p>รายงานประเมินมูลค่า → มติกรรมการ/ผู้ถือหุ้นของ A → สัญญาซื้อขายหุ้น → <b>ชำระเงินจริงผ่านธนาคาร</b> → ตราสารโอนหุ้นและปรับทะเบียนผู้ถือหุ้น (บอจ.5) → ปรับกรรมการของ B → ทำนโยบายค่าขนส่งภายในกลุ่ม ทุกขั้นเก็บเป็นกระดาษทำการของ FA</p>`,
+rubric:[["อธิบาย COI แนวตั้งและความจำเป็นต้องนำ B เข้ากลุ่ม",2],
+["ใช้เรื่องใบอนุญาตผูกกับนิติบุคคลอธิบายว่าทำไมซื้อหุ้นดีกว่า",2],
+["ปฏิเสธราคา 120 ลบ. และเสนอช่วงราคาที่มีรายงานประเมินรองรับ",2],
+["ระบุภาษีเงินได้ของผู้ขายและหลักบัญชีการรวมธุรกิจภายใต้การควบคุมเดียวกัน",2],
+["ระบุการชำระเงินจริงและเอกสารหลักฐานครบ",2]]},
+
+/* 3 */{topic:"asset", title:"สยามพลาสติกกับโรงงานที่ติดปัญหา",
+client:"บจก. สยามพลาสติก", biz:"ผลิตบรรจุภัณฑ์พลาสติก", target:"SET",
+brief:`<p>สยามพลาสติกเช่าโรงงานแห่งเดียวที่ใช้ผลิต 100% จาก บจก. สยามแลนด์ ซึ่งครอบครัวผู้ก่อตั้งถือหุ้น 100% ค่าเช่าเป็นราคาตลาด</p>
+<div class="tbl"><table><thead><tr><th>สิ่งที่อยู่ในสยามแลนด์</th><th>มูลค่า (ลบ.)</th></tr></thead><tbody>
+<tr><td>ที่ดินและอาคารโรงงาน (ผู้ประเมินอิสระ)</td><td>180</td></tr>
+<tr><td>ราคาประเมินของกรมที่ดินสำหรับโรงงาน</td><td>150</td></tr>
+<tr><td>ห้องชุด 6 ห้อง และที่ดินเขาใหญ่ 3 ไร่</td><td>45</td></tr>
+<tr><td>เงินกู้ธนาคาร (จำนองโรงงาน)</td><td>(90)</td></tr>
+<tr><td>ข้อพิพาทการประเมินภาษีที่ยังไม่ยุติ</td><td>(25)</td></tr></tbody></table></div>`,
+tasks:["เปรียบเทียบการซื้อหุ้นสยามแลนด์ กับการซื้อเฉพาะโรงงาน (Asset Acquisition)",
+"เลือกแนวทางและประมาณต้นทุนธุรกรรม",
+"ประเด็นที่ต้องจัดการ: จำนอง ราคา แหล่งเงิน และจังหวะเวลาเทียบกับ IPO",
+"ถ้าไม่ซื้อ ทางเลือกการเช่าต้องมีเงื่อนไขอะไร"],
+answer:`<h5>1. ซื้อหุ้น vs ซื้อทรัพย์สิน</h5>
+<ul><li><b>ซื้อหุ้น:</b> ได้ทั้งบริษัทรวมถึงห้องชุด ที่ดินเขาใหญ่ เงินกู้ และ<b>ข้อพิพาทภาษี 25 ลบ.</b> ต้องล้างทรัพย์สินที่ไม่เกี่ยวข้องก่อน และรับความเสี่ยงหนี้แฝง</li>
+<li><b>ซื้อทรัพย์สิน:</b> เลือกเฉพาะโรงงาน ตัดหนี้สินและความเสี่ยงที่ไม่ต้องการออก (Ring-fence) แต่มีต้นทุนการโอนสูงกว่า</li></ul>
+<h5>2. แนะนำซื้อเฉพาะโรงงาน และประมาณต้นทุน</h5>
+<ul><li>ค่าธรรมเนียมโอน 2% × ราคาประเมินกรมที่ดิน 150 = 3.0 ลบ.</li>
+<li>ภาษีธุรกิจเฉพาะ 3.3% (นิติบุคคลขายอสังหาฯ) × ราคาที่สูงกว่าระหว่างราคาขายกับราคาประเมิน = 3.3% × 180 ≈ 5.94 ลบ. (เมื่อเสียภาษีธุรกิจเฉพาะแล้วไม่ต้องเสียอากรแสตมป์)</li>
+<li>ภาษีหัก ณ ที่จ่าย 1% ≈ 1.8 ลบ. เป็นเครดิตภาษีของผู้ขาย</li></ul>
+<p>ใครรับภาระส่วนใดต้องตกลงในสัญญาตามเงื่อนไขการค้าทั่วไป ถ้ามีเครื่องจักรรวมด้วยต้องคิด VAT 7%</p>
+<h5>3. ประเด็นที่ต้องจัดการ</h5>
+<ul><li><b>ราคา:</b> ใช้ผู้ประเมินอิสระในรายชื่อ ก.ล.ต. เป็นราคาตลาด</li>
+<li><b>จำนอง:</b> ธนาคารต้องไถ่ถอนพร้อมวันโอน โดยนำเงินค่าขายไปชำระหนี้</li>
+<li><b>แหล่งเงิน:</b> ใช้เงินกู้ระยะสั้นก่อน IPO แล้วคืนด้วยเงินระดมทุน (ระบุในวัตถุประสงค์การใช้เงิน) หรือซื้อหลัง IPO แต่จะเป็นรายการเกี่ยวโยงที่ต้องผ่านการอนุมัติตามขนาดรายการ</li>
+<li><b>จังหวะ:</b> ทำก่อนยื่นไฟลิ่งดีที่สุด เพื่อให้นักลงทุนเห็นโครงสร้างที่สะอาด กำไรจะเปลี่ยนจากค่าเช่าเป็นค่าเสื่อมราคาและดอกเบี้ย</li></ul>
+<h5>4. ถ้าเลือกเช่า</h5>
+<p>ทำสัญญาเช่าระยะยาวเป็นหนังสือและจดทะเบียน (เช่าเกิน 3 ปีต้องจดทะเบียนจึงบังคับได้ตลอดอายุ) ค่าเช่าตามตลาด มีสิทธิต่ออายุและอัตราปรับขึ้นที่กำหนดไว้ชัด และให้สิทธิซื้อก่อน (First Right) หากผู้ให้เช่าจะขาย</p>`,
+rubric:[["ชี้ว่าการซื้อหุ้นจะรับหนี้แฝง ข้อพิพาทภาษี และทรัพย์สินที่ไม่เกี่ยวข้องมาด้วย",2],
+["เลือก Asset Acquisition พร้อมเหตุผล",2],
+["ระบุต้นทุนโอนอสังหาฯ ได้ (ค่าธรรมเนียม ภาษีธุรกิจเฉพาะ หัก ณ ที่จ่าย)",2],
+["จัดการจำนอง ราคาโดยผู้ประเมินอิสระ และแหล่งเงิน/จังหวะเวลา",2],
+["ระบุเงื่อนไขสัญญาเช่าระยะยาวที่ปกป้องบริษัท",2]]},
+
+/* 4 */{topic:"share", title:"ปูนไทยเหนือไม่มีเงินสดซื้อบริษัทพี่น้อง",
+client:"บจก. ปูนไทยเหนือ", biz:"ผลิตปูนสำเร็จรูป ภาคเหนือ", target:"SET",
+brief:`<p>ครอบครัวเดียวกันถือหุ้น 100% ในสามบริษัท ทำธุรกิจเดียวกันคนละภาค</p>
+<div class="tbl"><table><thead><tr><th>บริษัท</th><th>มูลค่ายุติธรรม (ลบ.)</th></tr></thead><tbody>
+<tr><td>A ปูนไทยเหนือ (จะ IPO) ทุน 200 ลบ. พาร์ 1 บาท</td><td>500</td></tr>
+<tr><td>B ปูนไทยกลาง</td><td>120</td></tr>
+<tr><td>C ปูนไทยใต้</td><td>80</td></tr></tbody></table></div>
+<p>A ต้องรวม B และ C เข้ากลุ่ม แต่มีเงินสดน้อย ครอบครัวไม่ต้องการให้ A กู้เงิน</p>`,
+tasks:["อธิบายกลไก Share Swap และคำนวณจำนวนหุ้นใหม่ที่ A ต้องออก",
+"ผลต่อทุนชำระและการวางขนาด IPO (สมมติผู้ถือหุ้นทั้งหมดเป็น Strategic Shareholder)",
+"ข้อดีข้อเสียเทียบกับการซื้อหุ้นด้วยเงินสด",
+"การบันทึกบัญชี"],
+answer:`<h5>1. กลไก Share Swap</h5>
+<p>A ออกหุ้นเพิ่มทุนให้ครอบครัว โดยครอบครัวชำระค่าหุ้นด้วยหุ้นของ B และ C แทนเงินสด ทำให้ B และ C เป็นบริษัทย่อย 100% ของ A</p>
+<ul><li>มูลค่าต่อหุ้นของ A = 500 ÷ 200 ล้านหุ้น = 2.50 บาท</li>
+<li>หุ้นใหม่ = (120 + 80) ÷ 2.50 = <b>80 ล้านหุ้น</b> → ทุนชำระ 280 ลบ.</li></ul>
+<h5>2. ผลต่อการวางขนาด IPO</h5>
+<p>ทุน 280 ลบ. อยู่ใกล้เส้น 300 ลบ. เมื่อเพิ่มทุน IPO ทุนจะเกิน 300 ลบ. จึงใช้เกณฑ์ Free Float ≥ 25% และเสนอขาย ≥ 15% หรือพาร์ ≥ 60 ลบ.</p>
+<ul><li>Free Float มาจากหุ้น IPO ทั้งหมด: X ÷ (280 + X) ≥ 25% → X ≥ 93.33 → อย่างน้อย <b>94 ล้านหุ้น</b> (ทุนหลัง IPO ≈ 374 ลบ.)</li>
+<li>ตรวจเกณฑ์เสนอขาย: 94 ÷ 374 ≈ 25% และพาร์ 94 ลบ. เกิน 60 ลบ. → ผ่าน</li></ul>
+<p>บทเรียน: การปรับโครงสร้างเปลี่ยนทุนชำระ จึงต้องวางแผนขนาด IPO หลังปรับโครงสร้างเสมอ</p>
+<h5>3. ข้อดีข้อเสีย</h5>
+<ul><li><b>ข้อดี:</b> ไม่ใช้เงินสด เก็บเงินไว้ขยายธุรกิจ ครอบครัวยังถือหุ้นสัดส่วนเดิมโดยรวม</li>
+<li><b>ข้อเสีย:</b> ผู้ถือหุ้นบุคคลอาจมีภาระภาษีจากกำไรการแลกหุ้น (มูลค่าที่ได้รับเกินต้นทุน) ทั้งที่ไม่ได้รับเงินสด อัตราแลกเปลี่ยนขึ้นกับการประเมินมูลค่าทั้งสองฝั่ง จึงต้องมีที่ปรึกษาประเมินอย่างเป็นอิสระ และต้องมีมติผู้ถือหุ้นเรื่องเพิ่มทุนและการชำระค่าหุ้นด้วยทรัพย์สิน</li></ul>
+<h5>4. บัญชี</h5>
+<p>รวมธุรกิจภายใต้การควบคุมเดียวกัน บันทึก B และ C ตามมูลค่าตามบัญชี ไม่เกิดค่าความนิยม ส่วนต่างบันทึกในส่วนของผู้ถือหุ้น และนำเสนองบเสมือนรวมกันตั้งแต่ต้น ซึ่งช่วยแสดงผลการดำเนินงานต่อเนื่องของกลุ่ม</p>`,
+rubric:[["อธิบายกลไก Share Swap ถูกต้อง",2],
+["คำนวณหุ้นใหม่ 80 ล้านหุ้น ทุน 280 ลบ.",2],
+["เห็นว่าหลัง IPO ทุนข้าม 300 ลบ. และคำนวณ IPO ขั้นต่ำราว 94 ล้านหุ้น",2],
+["ระบุภาระภาษีของผู้ถือหุ้นที่ไม่ได้รับเงินสด และความจำเป็นของการประเมินมูลค่า",2],
+["บันทึกบัญชีแบบรวมธุรกิจภายใต้การควบคุมเดียวกัน",2]]},
+
+/* 5 */{topic:"transfer", title:"รุ่งโรจน์อยากรวมบริษัทขายเข้าบริษัทผลิต",
+client:"บจก. รุ่งโรจน์แมนูแฟคเจอริ่ง", biz:"ผลิตสีทาบ้าน", target:"SET",
+brief:`<p>บจก. รุ่งโรจน์เซลส์ (B) จัดจำหน่ายสีของ A ทั้งหมด ครอบครัวถือหุ้นทั้งสองบริษัท 100% และต้องการให้เหลือนิติบุคคลเดียว</p>
+<div class="tbl"><table><thead><tr><th>ข้อมูล B</th><th></th></tr></thead><tbody>
+<tr><td>สินทรัพย์รวม (สินค้า ลูกหนี้ รถ)</td><td>90 ลบ.</td></tr>
+<tr><td>หนี้สินรวม</td><td>40 ลบ.</td></tr>
+<tr><td>ผลขาดทุนสะสมทางภาษี</td><td>8 ลบ.</td></tr>
+<tr><td>พนักงาน</td><td>85 คน</td></tr>
+<tr><td>สัญญากับตัวแทนจำหน่าย</td><td>40 ราย</td></tr></tbody></table></div>
+<p>B ไม่มีใบอนุญาตพิเศษ</p>`,
+tasks:["ทำไม EBT เหมาะกับโจทย์นี้",
+"เงื่อนไขและสิทธิประโยชน์ทางภาษีของ EBT",
+"ประเด็นปฏิบัติ: พนักงาน สัญญา ผลขาดทุนทางภาษี และลำดับเวลา",
+"ผลต่องบการเงินและการพิจารณาเกณฑ์กำไร"],
+answer:`<h5>1. ทำไม EBT</h5>
+<p>โจทย์ต้องการนิติบุคคลเดียว B ไม่มีใบอนุญาตที่ผูกกับนิติบุคคล การโอนกิจการทั้งหมด (Entire Business Transfer) จึงย้ายธุรกิจของ B มาไว้ใน A ได้ตรงที่สุด รายการซื้อขายระหว่างผู้ผลิตกับผู้จัดจำหน่ายหายไปทั้งหมด</p>
+<h5>2. เงื่อนไขและสิทธิประโยชน์</h5>
+<ul><li>B ต้องโอน<b>ทรัพย์สินและหนี้สินทั้งหมด</b>ให้ A ซึ่งเป็นบริษัทหรือห้างหุ้นส่วนนิติบุคคล</li>
+<li>B ต้อง<b>จดทะเบียนเลิกบริษัทภายในรอบระยะเวลาบัญชีที่โอน</b></li>
+<li>ได้รับยกเว้นภาษีเงินได้นิติบุคคลจากการโอน ภาษีมูลค่าเพิ่ม ภาษีธุรกิจเฉพาะ และอากรแสตมป์ โดยผู้รับโอนต้องใช้มูลค่าตามบัญชีของผู้โอนต่อตามเงื่อนไขของกรมสรรพากร</li></ul>
+<h5>3. ประเด็นปฏิบัติ</h5>
+<ul><li><b>พนักงาน 85 คน:</b> การเปลี่ยนนายจ้างต้องได้รับความยินยอมจากลูกจ้าง และอายุงานกับสิทธิประโยชน์เดิมต้องนับต่อเนื่อง</li>
+<li><b>สัญญาตัวแทน 40 ราย:</b> ต้องแปลงคู่สัญญาหรือทำสัญญาใหม่กับ A แจ้งลูกค้าและคู่ค้าล่วงหน้า</li>
+<li><b>ผลขาดทุนทางภาษี 8 ลบ.:</b> โดยทั่วไปไม่ตามมากับการโอน ถือเป็นต้นทุนของการปรับโครงสร้างที่ต้องชั่งน้ำหนัก</li>
+<li><b>ลำดับ:</b> มติผู้ถือหุ้นทั้งสองบริษัท → สัญญาโอนกิจการ → โอนสินทรัพย์ หนี้สิน และพนักงาน → B จดทะเบียนเลิกและชำระบัญชีภายในรอบบัญชีเดียวกัน</li></ul>
+<h5>4. ผลต่องบและเกณฑ์กำไร</h5>
+<p>เป็นการรวมธุรกิจภายใต้การควบคุมเดียวกัน แสดงผลการดำเนินงานรวมเสมือนเป็นหน่วยเดียวกันตลอดช่วงที่ควบคุมร่วม กำไรของกลุ่มที่เคยกระจายอยู่ใน B จะแสดงอยู่ใน A ควรหารือกับตลาดหลักทรัพย์ฯ ล่วงหน้าเรื่องการใช้ผลการดำเนินงานรวมพิจารณาคุณสมบัติ</p>
+<p class="note">เงื่อนไขภาษีอาจมีการปรับปรุง ในงานจริงต้องยืนยันกับที่ปรึกษาภาษีก่อนลงมือ</p>`,
+rubric:[["อธิบายว่าทำไม EBT ตอบโจทย์ (นิติบุคคลเดียว ไม่มีใบอนุญาตผูก ขจัด RPT)",2],
+["ระบุเงื่อนไข โอนทั้งหมด และเลิกบริษัทภายในรอบบัญชีเดียวกัน",2],
+["ระบุภาษีที่ได้รับยกเว้นครบ",2],
+["จัดการพนักงาน สัญญา และผลขาดทุนทางภาษี",2],
+["อธิบายผลต่องบการเงินรวมและการพิจารณาเกณฑ์กำไร",2]]},
+
+/* 6 */{topic:"transfer", title:"พี่น้องสองบริษัทที่แข่งกันเอง",
+client:"บจก. เอกสตีล และ บจก. โทสตีล", biz:"ผลิตเหล็กแปรรูป", target:"SET",
+brief:`<p>พี่ชายถือหุ้น 100% ในเอกสตีล (X) น้องชายถือหุ้น 100% ในโทสตีล (Y) ทั้งสองทำธุรกิจเดียวกันและแย่งลูกค้ากันในภาคกลาง ทั้งคู่ตกลงจะ IPO ร่วมกัน</p>
+<div class="tbl"><table><thead><tr><th></th><th>X เอกสตีล</th><th>Y โทสตีล</th></tr></thead><tbody>
+<tr><td>มูลค่ายุติธรรม (ลบ.)</td><td>600</td><td>400</td></tr>
+<tr><td>สิทธิพิเศษ</td><td>บัตรส่งเสริมการลงทุน (BOI)</td><td>สัญญาจัดซื้อกับหน่วยงานรัฐ</td></tr></tbody></table></div>
+<p>น้องชายอยากใช้ชื่อบริษัทใหม่ “เพื่อไม่ให้ใครเป็นของใคร”</p>`,
+tasks:["ทำไมต้องรวมกันก่อน IPO แทนที่จะ IPO แค่บริษัทเดียว",
+"เปรียบเทียบ Amalgamation (A+B=C), Merger (A+B=A) และ Share Swap/Holding แล้วเลือก",
+"อัตราแลกหุ้นและสัดส่วนถือหุ้นหลังรวม",
+"ขั้นตอนทางกฎหมายและประเด็นต่อ IPO"],
+answer:`<h5>1. ทำไมต้องรวม</h5>
+<p>ถ้า IPO เพียงบริษัทเดียว อีกบริษัทจะเป็นธุรกิจแข่งขันของญาติสายโลหิตของผู้ถือหุ้นใหญ่ เป็น COI แนวนอนที่ ก.ล.ต. ไม่ยอมรับ การรวมเป็นกลุ่มเดียวแก้ปัญหานี้และเพิ่มขนาดธุรกิจ</p>
+<h5>2. เปรียบเทียบ</h5>
+<ul><li><b>Amalgamation (A+B=C):</b> ได้บริษัทใหม่และชื่อเป็นกลาง X และ Y สิ้นสภาพ แต่บัตร BOI และสัญญารัฐอาจต้องขออนุมัติหรือขอความยินยอมใหม่ C ไม่มีประวัติในนามตัวเอง ต้องอาศัยงบรวมภายใต้การควบคุมเดียวกัน</li>
+<li><b>Merger (A+B=A):</b> ทำได้ตามการแก้ไขประมวลกฎหมายแพ่งและพาณิชย์ที่มีผลตั้งแต่ปี 2566 ให้ X คงอยู่และรักษาบัตร BOI ได้ แต่สัญญารัฐของ Y ยังต้องจัดการ และน้องชายอาจรู้สึกถูกกลืน</li>
+<li><b>Share Swap ภายใต้บริษัทเดียว (หรือ Holding ใหม่):</b> X ออกหุ้นใหม่ให้น้องชายแลกกับหุ้น Y ทั้งหมด ทั้ง X และ Y ยังคงอยู่ บัตร BOI สัญญา และใบอนุญาตไม่ต้องโอน</li></ul>
+<p><b>แนะนำ Share Swap</b> เพราะรักษาสิทธิพิเศษของทั้งสองฝั่งได้ หากเรื่องชื่อสำคัญ ให้ตั้ง Holding ใหม่ที่ใช้ชื่อเป็นกลางแล้วแลกหุ้นทั้ง X และ Y เข้าไป</p>
+<h5>3. อัตราแลกหุ้น</h5>
+<p>มูลค่ารวม 1,000 ลบ. → พี่ชาย 60% น้องชาย 40% อัตราต้องมาจากการประเมินมูลค่าที่ทั้งสองฝ่ายยอมรับ ใช้วิธีเดียวกันทั้งสองบริษัท</p>
+<h5>4. ขั้นตอนและประเด็นต่อ IPO</h5>
+<ul><li>ถ้าใช้ Amalgamation: มติพิเศษผู้ถือหุ้น โฆษณาและแจ้งเจ้าหนี้ให้คัดค้านภายในกำหนด (60 วันสำหรับบริษัทจำกัด) แล้วจดทะเบียน</li>
+<li>ทั้งพี่และน้องเป็น Strategic Shareholder ติด Silent Period</li>
+<li>ข้อตกลงระหว่างพี่น้อง (ที่นั่งกรรมการ สิทธิ veto) ต้องสิ้นสุดเมื่อเข้าตลาด ใช้กลไกกรรมการตามปกติ</li>
+<li>ต้องตั้งผู้บริหารชุดเดียวและบริหารต่อเนื่องอย่างน้อย 1 ปีก่อนยื่น</li></ul>`,
+rubric:[["อธิบายว่าการ IPO บริษัทเดียวทิ้งธุรกิจแข่งขันของญาติไว้ (COI แนวนอน)",2],
+["เปรียบเทียบสามวิธีโดยใช้ประเด็นใบอนุญาต/สัญญา/การคงอยู่ของนิติบุคคล",2],
+["เลือกแนวทางพร้อมเหตุผลที่สอดคล้องกับข้อเท็จจริงในเคส",2],
+["อัตราแลกหุ้น 60:40 จากการประเมินมูลค่า",2],
+["ระบุขั้นตอนทางกฎหมายและผลต่อ IPO (Silent Period ผู้บริหาร ข้อตกลงพี่น้อง)",2]]},
+
+/* 7 */{topic:"group", title:"เครือโรงพยาบาลสี่บริษัท",
+client:"กลุ่มเวชการ", biz:"โรงพยาบาลเอกชน", target:"SET",
+brief:`<div class="tbl"><table><thead><tr><th>บริษัท</th><th>ผู้ถือหุ้น</th><th>กำไร (ลบ.)</th></tr></thead><tbody>
+<tr><td>H1 โรงพยาบาลกรุงเทพฯ</td><td>ครอบครัว 100%</td><td>120</td></tr>
+<tr><td>H2 โรงพยาบาลชลบุรี</td><td>ครอบครัว 70% กลุ่มแพทย์ท้องถิ่น 30%</td><td>40</td></tr>
+<tr><td>L แล็บตรวจวิเคราะห์ (รายได้ 80% จาก H1, H2)</td><td>ครอบครัว 100%</td><td>10</td></tr>
+<tr><td>P เจ้าของที่ดินและอาคาร H1 และตึกแถว 2 คูหาให้คนนอกเช่า</td><td>ครอบครัว 100%</td><td>15</td></tr></tbody></table></div>
+<p>ครอบครัวต้องการบริษัทจดทะเบียนเพียงบริษัทเดียว</p>`,
+tasks:["เสนอโครงสร้างกลุ่มหลังปรับ (อธิบายเป็นแผนภาพข้อความได้)",
+"ใช้ H1 เป็นบริษัทแม่ หรือตั้ง Holding ใหม่ — ข้อดีข้อเสีย",
+"จัดการ H2 (ผู้ถือหุ้นส่วนน้อยเป็นแพทย์), L และ P อย่างไร",
+"ประเด็นภาษีเงินปันผลภายในกลุ่ม"],
+answer:`<h5>1. โครงสร้างที่เสนอ</h5>
+<p>บริษัทจดทะเบียน → H1 (100%) · H2 (70% หรือมากกว่า) · L (100%) · P หรือเฉพาะทรัพย์สินโรงพยาบาล (100%)</p>
+<h5>2. H1 เป็นแม่ vs Holding ใหม่</h5>
+<ul><li><b>H1 เป็นแม่:</b> ใช้ประวัติผลประกอบการของ H1 ได้ตรง ไม่ต้องตั้งนิติบุคคลใหม่ แต่ H1 ต้องใช้เงินหรือออกหุ้นซื้อบริษัทอื่น</li>
+<li><b>Holding ใหม่:</b> แลกหุ้นทุกบริษัทเข้า Holding เป็นกลางและขยายกิจการง่าย แต่ต้องผ่านเกณฑ์ Holding Company ของตลาดฯ (ธุรกิจหลักผ่านบริษัทย่อยหลักที่ถือหุ้นและมีอำนาจควบคุม และรายได้/สินทรัพย์ส่วนใหญ่มาจากบริษัทย่อยหลัก) และ Holding ทำธุรกิจอื่นไม่ได้</li></ul>
+<p>ใบอนุญาตสถานพยาบาลผูกกับนิติบุคคล จึงต้องใช้การซื้อหุ้นหรือแลกหุ้น ไม่ใช่การโอนกิจการ</p>
+<h5>3. แต่ละบริษัท</h5>
+<ul><li><b>H2:</b> ซื้อหรือแลกหุ้น 70% จากครอบครัว แพทย์ท้องถิ่นเป็นผู้ถือหุ้นส่วนน้อยที่ไม่เกี่ยวโยงได้ ถ้าแพทย์เป็นผู้บริหารหลักของ H2 อาจเสนอแลกเป็นหุ้นบริษัทแม่ เพื่อให้ผลประโยชน์ไปทางเดียวกับผู้ถือหุ้นทั้งกลุ่ม</li>
+<li><b>L:</b> พึ่งพิงรายได้จากโรงพยาบาล 80% เป็นความสัมพันธ์แนวตั้ง นำเข้ากลุ่ม</li>
+<li><b>P:</b> อาคาร H1 เป็นทรัพย์สินสำคัญของธุรกิจหลัก นำเข้ากลุ่ม ทางเลือกคือแยกตึกแถวออกจาก P ก่อนแล้วซื้อหุ้น P หรือซื้อเฉพาะที่ดินและอาคารโรงพยาบาล ถ้ายังเช่าต้องเป็นสัญญาระยะยาวราคาตลาด</li></ul>
+<h5>4. ภาษีเงินปันผลภายในกลุ่ม</h5>
+<p>บริษัทที่ถือหุ้นไม่น้อยกว่า 25% (และไม่มีการถือหุ้นไขว้กลับ) ได้รับยกเว้นภาษีเงินปันผล เมื่อถือหุ้นไว้ไม่น้อยกว่า 3 เดือนก่อนและหลังวันได้รับเงินปันผล จึงส่งกำไรขึ้นบริษัทแม่ได้โดยไม่เสียภาษีซ้ำ</p>`,
+rubric:[["เสนอโครงสร้างที่รวม H1 H2 L และทรัพย์สินโรงพยาบาลไว้ในกลุ่ม",2],
+["เปรียบเทียบ H1 เป็นแม่กับ Holding ใหม่ได้ครบทั้งสองด้าน",2],
+["เห็นว่าใบอนุญาตสถานพยาบาลบังคับให้ใช้การซื้อ/แลกหุ้น",2],
+["จัดการ L และ P (รวมการแยกตึกแถวที่ไม่เกี่ยวข้อง) อย่างมีเหตุผล",2],
+["อธิบายการยกเว้นภาษีเงินปันผลระหว่างบริษัท",2]]},
+
+/* 8 */{topic:"group", title:"ไทยการ์เมนต์กับทรัพย์สินของครอบครัวในงบบริษัท",
+client:"บจก. ไทยการ์เมนต์", biz:"ผลิตเสื้อผ้าส่งออก", target:"mai",
+brief:`<p>DD พบทรัพย์สินที่ไม่เกี่ยวกับธุรกิจหลักในงบของบริษัท</p>
+<div class="tbl"><table><thead><tr><th>รายการ</th><th>ราคาตามบัญชี</th><th>ราคาตลาด</th></tr></thead><tbody>
+<tr><td>รถยนต์หรู 2 คัน ใช้โดยครอบครัว</td><td>6</td><td>9</td></tr>
+<tr><td>คอนโดหัวหิน ผู้ก่อตั้งใช้พักผ่อน</td><td>8</td><td>12</td></tr>
+<tr><td>ที่ดินเปล่า 30 ไร่ ซื้อเก็งกำไรปี 2558</td><td>20</td><td>45</td></tr>
+<tr><td>หุ้น 40% ในร้านอาหารของครอบครัว</td><td>5</td><td>5</td></tr>
+<tr><td>ลูกหนี้กรรมการ (เบิกล่วงหน้า)</td><td>12</td><td>—</td></tr></tbody></table></div>
+<p>หน่วย: ล้านบาท</p>`,
+tasks:["ทำไมต้องจัดการรายการเหล่านี้ก่อน IPO",
+"วิธีจัดการแต่ละรายการและการกำหนดราคา",
+"ผลต่อกำไร ภาษี และเกณฑ์กำไร",
+"นโยบายที่ต้องมีหลังปรับโครงสร้าง"],
+answer:`<h5>1. เหตุผล</h5>
+<p>ทรัพย์สินเหล่านี้ไม่สร้างรายได้ให้ธุรกิจหลัก เป็นประโยชน์ส่วนตัวของครอบครัวที่บริษัทรับภาระ (ค่าเสื่อมราคา ค่าดูแล) ทำให้ผลตอบแทนต่อทุนต่ำ นักลงทุนเข้าใจธุรกิจยาก และเป็นช่องทางถ่ายเทประโยชน์</p>
+<h5>2. วิธีจัดการ</h5>
+<ul><li><b>รถยนต์และคอนโด:</b> ขายให้ครอบครัวหรือบุคคลภายนอกที่ราคาตลาด (ประเมินอิสระ) ชำระเงินจริง ถ้ามีรถที่ใช้ในงานจริงให้เก็บไว้พร้อมนโยบายการใช้</li>
+<li><b>ที่ดิน 30 ไร่:</b> ขายที่ราคาตลาด 45 ลบ. ห้ามขายที่ราคาทุน 20 ลบ. เพราะเท่ากับยกกำไร 25 ลบ. ให้ครอบครัว</li>
+<li><b>หุ้นร้านอาหาร:</b> ขายคืนครอบครัวที่มูลค่ายุติธรรม</li>
+<li><b>ลูกหนี้กรรมการ:</b> เรียกเก็บคืนทั้งหมดก่อนยื่น</li></ul>
+<h5>3. ผลต่อกำไรและภาษี</h5>
+<ul><li>กำไรจากการขาย (ที่ดิน 25 ลบ. รถ 3 ลบ. คอนโด 4 ลบ.) เสียภาษีเงินได้นิติบุคคล 20% และเป็นรายการครั้งเดียว ต้องตัดออกเมื่อพิจารณาเกณฑ์กำไร</li>
+<li>การขายอสังหาฯ มีค่าธรรมเนียมโอน ภาษีธุรกิจเฉพาะ และหัก ณ ที่จ่าย</li>
+<li>ค่าใช้จ่ายที่เป็นประโยชน์ส่วนตัวที่หายไปทำให้กำไรปกติดีขึ้นในปีต่อไป ค่าใช้จ่ายส่วนตัวของกรรมการในอดีตอาจถือเป็นเงินได้ของกรรมการ</li></ul>
+<h5>4. นโยบาย</h5>
+<p>นโยบายห้ามให้กู้ยืมหรือเบิกล่วงหน้าแก่กรรมการ นโยบายการใช้ทรัพย์สินบริษัท นโยบายการลงทุนที่ต้องเกี่ยวกับธุรกิจหลักและผ่านการอนุมัติ และการเปิดเผยค่าตอบแทนกรรมการให้ครบ</p>`,
+rubric:[["อธิบายเหตุผลด้านการถ่ายเทประโยชน์ ประสิทธิภาพเงินทุน และความชัดเจนของธุรกิจ",2],
+["เสนอวิธีจัดการทุกรายการ",2],
+["ยืนยันราคาตลาด (โดยเฉพาะที่ดิน) และการชำระเงินจริง",2],
+["ระบุว่ากำไรจากการขายเป็นรายการครั้งเดียวและมีภาระภาษี",2],
+["เสนอนโยบายป้องกันหลังปรับโครงสร้าง",2]]},
+
+/* 9 */{topic:"asset", title:"ร้านยาที่เช่าตึกจากผู้ก่อตั้ง",
+client:"บจก. เภสัชไทย", biz:"ร้านขายยา 40 สาขา", target:"mai",
+brief:`<p>5 สาขาเช่าตึกแถวที่ผู้ก่อตั้งถือในนามบุคคลธรรมดา <b>ไม่มีสัญญาเป็นหนังสือ</b></p>
+<div class="tbl"><table><thead><tr><th>สาขา</th><th>ค่าเช่าจ่ายจริง</th><th>ค่าเช่าตลาด</th><th>หมายเหตุ</th></tr></thead><tbody>
+<tr><td>สาขาหลัก (ยอดขายสูงสุด)</td><td>60,000</td><td>90,000</td><td>ผู้ก่อตั้งถือมา 12 ปี</td></tr>
+<tr><td>สาขาอื่นอีก 4 แห่ง</td><td>40,000</td><td>70,000</td><td>ถือมา 2–8 ปี</td></tr></tbody></table></div>
+<p>หน่วย: บาทต่อเดือนต่อสาขา</p>`,
+tasks:["ปัญหาของสภาพปัจจุบันคืออะไร",
+"ควรซื้อหรือเช่าต่อ วิเคราะห์รายสาขา",
+"เงื่อนไขสำคัญของสัญญาเช่าใหม่",
+"ผลทางบัญชีและการกำกับดูแลหลังเข้าตลาด"],
+answer:`<h5>1. ปัญหา</h5>
+<ul><li>ค่าเช่าต่ำกว่าตลาด กำไรสูงเกินจริงปีละ (30,000 + 4 × 30,000) × 12 = 1.8 ลบ. ก่อนภาษี</li>
+<li>ไม่มีสัญญา ผู้ก่อตั้งเลิกให้เช่าหรือขึ้นค่าเช่าเมื่อใดก็ได้ ธุรกิจไม่มีความต่อเนื่อง</li></ul>
+<h5>2. ซื้อหรือเช่า</h5>
+<ul><li><b>สาขาหลัก:</b> สำคัญที่สุด พิจารณาซื้อ (Asset Acquisition) ราคาตามผู้ประเมินในรายชื่อ ก.ล.ต. ผู้ก่อตั้งถือเกิน 5 ปี จึงเสียอากรแสตมป์ 0.5% แทนภาษีธุรกิจเฉพาะ ค่าธรรมเนียมโอน 2% และภาษีเงินได้หัก ณ ที่จ่ายตามเกณฑ์บุคคลธรรมดา</li>
+<li><b>สาขาอื่น:</b> เช่าระยะยาวคุ้มกว่า เก็บเงินไว้ขยายสาขา ถ้าผู้ก่อตั้งขายในอนาคต สาขาที่ถือไม่ถึง 5 ปีจะมีภาษีธุรกิจเฉพาะ 3.3%</li></ul>
+<h5>3. เงื่อนไขสัญญาเช่า</h5>
+<ul><li>ค่าเช่าตามตลาดตามรายงานผู้ประเมินอิสระ</li>
+<li>อายุ 10–15 ปี ทำเป็นหนังสือและ<b>จดทะเบียน</b> (เช่าเกิน 3 ปีถ้าไม่จดทะเบียนบังคับได้เพียง 3 ปี)</li>
+<li>สิทธิต่ออายุของผู้เช่า อัตราปรับขึ้นที่กำหนดล่วงหน้า และสิทธิซื้อก่อนหากผู้ให้เช่าจะขาย</li></ul>
+<h5>4. บัญชีและการกำกับดูแล</h5>
+<p>ตาม TFRS 16 บันทึกสินทรัพย์สิทธิการใช้และหนี้สินตามสัญญาเช่า ค่าเช่าเปลี่ยนเป็นค่าเสื่อมราคาและดอกเบี้ย หลังเข้าตลาด การต่อสัญญาหรือเปลี่ยนเงื่อนไขเป็นรายการเกี่ยวโยงที่ต้องอนุมัติตามขนาดรายการ และคณะกรรมการตรวจสอบควรสอบทานอัตราค่าเช่าทุกปี</p>`,
+rubric:[["ระบุทั้งปัญหาค่าเช่าต่ำกว่าตลาดและการไม่มีสัญญา",2],
+["คำนวณผลกระทบกำไรได้ใกล้เคียง",2],
+["แยกการตัดสินใจรายสาขาอย่างมีเหตุผล",2],
+["เงื่อนไขสัญญาเช่า: ราคาตลาด จดทะเบียน ต่ออายุ สิทธิซื้อก่อน",2],
+["ระบุ TFRS 16 และการอนุมัติรายการเกี่ยวโยงหลังเข้าตลาด",2]]},
+
+/* 10 */{topic:"asset", title:"แบรนด์ครัวคุณยายเป็นของผู้ก่อตั้ง",
+client:"บจก. ครัวคุณยาย", biz:"ร้านอาหารไทย 25 สาขา", target:"mai",
+brief:`<p>เครื่องหมายการค้า “ครัวคุณยาย” จดทะเบียนในนามผู้ก่อตั้งเป็นการส่วนตัวตั้งแต่ปี 2555 บริษัทใช้โดยไม่จ่ายค่าสิทธิ</p>
+<p>สูตรน้ำพริกหลักอยู่กับผู้ก่อตั้งคนเดียว เพจ Facebook และ LINE OA ผูกกับบัญชีส่วนตัว ชื่อโดเมนจดในนามผู้ก่อตั้ง</p>`,
+tasks:["ความเสี่ยงของสภาพนี้ต่อผู้ลงทุน",
+"เปรียบเทียบการโอนสิทธิ (Assignment) กับการให้ใช้สิทธิ (License)",
+"การกำหนดราคาและผลทางภาษี",
+"ขั้นตอนดำเนินการให้ครบทุกสินทรัพย์ทางปัญญา"],
+answer:`<h5>1. ความเสี่ยง</h5>
+<p>แบรนด์คือสินทรัพย์หลักของธุรกิจร้านอาหาร ถ้าผู้ก่อตั้งเป็นเจ้าของ เขาสามารถให้คนอื่นใช้ เรียกค่าสิทธิภายหลัง หรือถอนสิทธิได้ เป็น COI แบบพึ่งพิงทรัพยากร และกำไรปัจจุบันยังไม่สะท้อนต้นทุนค่าสิทธิ ความรู้เรื่องสูตรที่อยู่กับคนเดียวเป็นความเสี่ยงจากบุคคลสำคัญ</p>
+<h5>2. Assignment vs License</h5>
+<ul><li><b>โอนสิทธิให้บริษัท (แนะนำ):</b> บริษัทเป็นเจ้าของถาวร ควบคุมได้เต็มที่ เป็นการซื้อทรัพย์สินทางปัญญาจากบุคคลเกี่ยวโยง</li>
+<li><b>License:</b> ต้องเป็นสิทธิแต่เพียงผู้เดียว ระยะยาว ค่าสิทธิตามตลาด และห้ามเลิกสัญญาโดยง่าย ยังเหลือความเสี่ยงและเป็น RPT ต่อเนื่องที่ต้องอนุมัติทุกครั้งที่ต่อสัญญา</li></ul>
+<h5>3. ราคาและภาษี</h5>
+<p>ประเมินมูลค่าแบรนด์โดยผู้ประเมินอิสระ (เช่น วิธี Relief from Royalty) ผู้ก่อตั้งมีเงินได้จากการโอนสิทธิที่ต้องเสียภาษีบุคคลธรรมดา บริษัทบันทึกสินทรัพย์ไม่มีตัวตนตามราคาที่จ่าย หากครอบครัวยอมโอนในราคาต่ำ ต้องบันทึกเหตุผลและผลทางภาษีไว้ชัด</p>
+<h5>4. ขั้นตอน</h5>
+<ul><li>ทำสัญญาโอนสิทธิ และจดทะเบียนการโอนที่กรมทรัพย์สินทางปัญญา</li>
+<li>ย้ายเพจ LINE OA และโดเมนให้เป็นของบริษัท ผู้ดูแลเป็นพนักงานตามตำแหน่ง</li>
+<li>บันทึกสูตรเป็นความลับทางการค้าของบริษัท ฝึกทีมครัว และมีสัญญารักษาความลับกับพนักงาน</li>
+<li>ให้ผู้ก่อตั้งทำสัญญาไม่ใช้ชื่อหรือสูตรทำธุรกิจแข่งขัน</li></ul>`,
+rubric:[["ชี้ความเสี่ยงที่บริษัทไม่ได้ควบคุมแบรนด์ และกำไรยังไม่สะท้อนค่าสิทธิ",2],
+["เปรียบเทียบ Assignment กับ License และเลือกได้อย่างมีเหตุผล",2],
+["ใช้การประเมินมูลค่าอิสระ และระบุภาษีของผู้โอน",2],
+["รวมสินทรัพย์ดิจิทัล (เพจ บัญชี โดเมน) และสูตรอาหารด้วย",2],
+["มีสัญญาไม่แข่งขันหรือรักษาความลับประกอบ",2]]},
+
+/* 11 */{topic:"share", title:"ผู้ก่อตั้งถือหุ้นตรงในบริษัทลูกที่กำไรที่สุด",
+client:"บจก. ไทยฟู้ดกรุ๊ป", biz:"ผลิตอาหารแช่แข็ง", target:"SET",
+brief:`<p>บริษัทแม่ A ถือหุ้น 60% ในบริษัทลูก S ส่วนอีก <b>40% ผู้ก่อตั้งถือในนามตัวเอง</b></p>
+<div class="tbl"><table><thead><tr><th>ล้านบาท</th><th>A (เฉพาะกิจการ)</th><th>S</th></tr></thead><tbody>
+<tr><td>กำไรสุทธิ</td><td>30</td><td>70</td></tr></tbody></table></div>
+<p>A ขายวัตถุดิบให้ S ในราคาทุน ไม่บวกกำไร</p>`,
+tasks:["ระบุความขัดแย้งทางผลประโยชน์ในโครงสร้างนี้",
+"ผลต่อกำไรที่ใช้พิจารณาและมูลค่ากิจการ",
+"ทางเลือกปรับโครงสร้าง (ซื้อหุ้นด้วยเงินสด / แลกหุ้น / ซื้อหลัง IPO)",
+"แนวทางที่แนะนำและสิ่งที่ต้องแก้คู่กัน"],
+answer:`<h5>1. COI</h5>
+<p>กำไรทุก 1 บาทใน S ผู้ก่อตั้งได้ 40 สตางค์โดยตรง บวกส่วนที่ได้ผ่าน A ขณะที่กำไรใน A ผู้ถือหุ้นรายย่อยของ A ได้ร่วมด้วย ผู้ก่อตั้งจึงมีแรงจูงใจย้ายกำไรไปไว้ที่ S การที่ A ขายวัตถุดิบให้ S ในราคาทุนคือหลักฐานของการถ่ายโอนราคาแล้ว</p>
+<h5>2. ผลต่อกำไร</h5>
+<p>กำไรรวม 100 ลบ. แต่ส่วนที่เป็นของบริษัทใหญ่ = 30 + 60% × 70 = <b>72 ลบ.</b> ส่วนได้เสียที่ไม่มีอำนาจควบคุม 28 ลบ. ทำให้กำไรที่ใช้พิจารณาและมูลค่าต่อหุ้นของ A ลดลง</p>
+<h5>3. ทางเลือก</h5>
+<ul><li><b>A ซื้อ 40% ด้วยเงินสด:</b> ต้องหาเงิน ผู้ก่อตั้งเสียภาษีจากกำไรการขาย</li>
+<li><b>แลกหุ้น:</b> A ออกหุ้นใหม่ให้ผู้ก่อตั้งแลกกับหุ้น S 40% ไม่ใช้เงินสด สัดส่วนของผู้ก่อตั้งใน A เพิ่มขึ้น</li>
+<li><b>ใช้เงิน IPO ซื้อภายหลัง:</b> เป็นรายการเกี่ยวโยงขนาดใหญ่ที่ต้องมี IFA และมติผู้ถือหุ้น นักลงทุนจะมองว่าเงินระดมทุนไหลไปให้ผู้ก่อตั้ง</li></ul>
+<h5>4. แนะนำ</h5>
+<p>แลกหุ้นก่อนยื่นไฟลิ่ง ให้ S เป็นบริษัทย่อย 100% กำไรส่วนของบริษัทใหญ่เป็น 100 ลบ. และผลประโยชน์ของผู้ก่อตั้งอยู่ระดับเดียวกับผู้ถือหุ้นทุกคน อัตราแลกหุ้นอ้างอิงการประเมินมูลค่าอิสระ ต้องแก้ราคาซื้อขายวัตถุดิบระหว่าง A กับ S ให้เป็นราคาตลาด และทำเอกสารนโยบายราคาโอน</p>`,
+rubric:[["อธิบายแรงจูงใจย้ายกำไรไปบริษัทลูก และชี้หลักฐานราคาทุน",2],
+["คำนวณกำไรส่วนของบริษัทใหญ่ 72 ลบ.",2],
+["เปรียบเทียบทางเลือกได้อย่างน้อยสองทางพร้อมข้อดีข้อเสีย",2],
+["เลือกทำก่อนยื่นไฟลิ่ง และให้เหตุผล",2],
+["แก้ราคาซื้อขายระหว่างกันให้เป็นราคาตลาดคู่กัน",2]]},
+
+/* 12 */{topic:"coi", title:"พี่ชาย CEO ไม่ยอมขายบริษัท",
+client:"บจก. สยามแอร์เซอร์วิส", biz:"ติดตั้งและดูแลแอร์อาคารพาณิชย์ กรุงเทพฯ", target:"mai",
+brief:`<p>พี่ชายของ CEO ไม่ได้ถือหุ้นหรือเป็นกรรมการในบริษัทที่จะ IPO แต่ถือหุ้น 100% ในบริษัทติดตั้งแอร์<b>บ้านพักอาศัย</b>ในกรุงเทพฯ บางครั้งรับงานสำนักงานขนาดเล็ก (ราว 10% ของรายได้)</p>
+<p>สองบริษัทใช้ซัพพลายเออร์รายเดียวกัน พี่ชายปฏิเสธการขายหรือเลิกกิจการ</p>`,
+tasks:["เป็น COI หรือไม่ ใครนับเป็นบุคคลที่ต้องพิจารณา",
+"ประเมินระดับความทับซ้อนของธุรกิจ",
+"ทางเลือกเมื่อพี่ชายไม่ยอมขายหรือเลิก",
+"ข้อสรุปของ FA และสิ่งที่ต้องเปิดเผย"],
+answer:`<h5>1. เป็น COI</h5>
+<p>พี่ชายเป็นญาติสายโลหิตของผู้บริหาร จึงอยู่ในขอบเขตบุคคลที่อาจมีความขัดแย้ง แม้ไม่ได้ถือหุ้นในบริษัท IPO ก็ตาม</p>
+<h5>2. ระดับความทับซ้อน</h5>
+<p>ธุรกิจหลักต่างกลุ่มลูกค้า (บ้าน vs อาคารพาณิชย์) แต่มีส่วนทับซ้อนจริงคืองานสำนักงานขนาดเล็ก 10% และใช้ซัพพลายเออร์ร่วม ซึ่งอาจทำให้แย่งเงื่อนไขการซื้อ FA ต้องเก็บหลักฐาน: รายชื่อลูกค้าที่ไม่ซ้ำกัน พนักงานและทรัพยากรที่แยกกัน</p>
+<h5>3. ทางเลือก</h5>
+<ul><li>แบ่งขอบเขตธุรกิจเป็นลายลักษณ์อักษร: พี่ชายรับงานเฉพาะบ้านพักอาศัย</li>
+<li>สัญญาไม่ประกอบธุรกิจแข่งขันในกลุ่มลูกค้าพาณิชย์ และส่งต่องานสำนักงานให้บริษัท IPO</li>
+<li>สัญญาให้สิทธิก่อน (First Right) สำหรับโอกาสงานพาณิชย์</li>
+<li>หากพี่ชายไม่ยอมลงนามแม้แต่สัญญา: ความเสี่ยงสูงที่ ก.ล.ต. จะไม่ยอมรับ ควรเลื่อนการยื่น หรือพิจารณาให้บริษัท IPO รับงานบ้านพักอาศัยไม่ได้ ซึ่งก็ยังไม่แก้ส่วนทับซ้อน</li></ul>
+<h5>4. ข้อสรุป</h5>
+<p>การเปิดเผยอย่างเดียวไม่พอสำหรับธุรกิจที่แข่งขันกันได้ ต้องมีอย่างน้อยการแบ่งขอบเขตที่ตรวจสอบได้และสัญญาควบคุม แล้วเปิดเผยในไฟลิ่งทั้งข้อเท็จจริง มาตรการ และความเสี่ยงที่เหลือ คณะกรรมการตรวจสอบติดตามการปฏิบัติตามสัญญาทุกปี</p>`,
+rubric:[["ระบุว่าพี่ชายเป็นบุคคลที่ต้องพิจารณาแม้ไม่ถือหุ้น",2],
+["วิเคราะห์ส่วนทับซ้อนจริง (งานสำนักงาน ซัพพลายเออร์ร่วม)",2],
+["เสนอการแบ่งขอบเขต สัญญาไม่แข่งขัน และสิทธิก่อน",2],
+["ระบุว่าถ้าไม่ยอมแม้แต่สัญญา ควรเลื่อนหรือทบทวนการ IPO",2],
+["สรุปว่าการเปิดเผยอย่างเดียวไม่พอ และระบุสิ่งที่ต้องเปิดเผย",2]]},
+
+/* 13 */{topic:"group", title:"หุ้นในชื่อพนักงานและหุ้นลึกลับ 5%",
+client:"บจก. วิศวกรรมไทย", biz:"รับเหมางานระบบไฟฟ้า", target:"SET",
+brief:`<div class="tbl"><table><thead><tr><th>ชื่อในทะเบียน</th><th>สัดส่วน</th><th>ข้อเท็จจริงจาก DD</th></tr></thead><tbody>
+<tr><td>ผู้ก่อตั้ง</td><td>55%</td><td>ถือเอง</td></tr>
+<tr><td>ภรรยาผู้ก่อตั้ง</td><td>15%</td><td>ถือเอง</td></tr>
+<tr><td>พนักงาน 4 คน (นักบัญชี คนขับรถ ผู้จัดการ 2 คน)</td><td>25%</td><td>ถือแทนผู้ก่อตั้งตั้งแต่ปี 2550</td></tr>
+<tr><td>นาย ก. (เพื่อนผู้ก่อตั้ง)</td><td>5%</td><td>ถือแทนเจ้าของบริษัทผู้ขายสายไฟรายใหญ่ของบริษัท</td></tr></tbody></table></div>`,
+tasks:["ทำไมต้องแก้การถือหุ้นแทนก่อน IPO",
+"วิธีแก้และเอกสารที่ต้องมี",
+"ประเด็นของหุ้น 5% ที่ถือแทนเจ้าของซัพพลายเออร์",
+"ผลต่อ Strategic Shareholder, Silent Period และ Free Float"],
+answer:`<h5>1. เหตุผล</h5>
+<p>ผู้ลงทุนต้องรู้ว่าใครเป็นเจ้าของและผู้มีอำนาจควบคุมที่แท้จริง การถือแทนทำให้ระบุบุคคลเกี่ยวโยงผิด คำนวณ Free Float และ Silent Period ผิด และเสี่ยงข้อพิพาทถ้าผู้ถือแทนไม่ยอมคืน</p>
+<h5>2. วิธีแก้</h5>
+<p>ทำหนังสือยืนยันการถือหุ้นแทนจากทั้งสองฝ่าย โอนหุ้นกลับเข้าชื่อเจ้าของจริงด้วยตราสารโอน ปรับทะเบียนผู้ถือหุ้น และมีหลักฐานว่าเงินลงทุนเดิมมาจากใคร ปรึกษาที่ปรึกษาภาษีเรื่องราคาโอนและการพิสูจน์ว่าเป็นการคืนกรรมสิทธิ์ ไม่ใช่การขาย</p>
+<h5>3. หุ้น 5% ของเจ้าของซัพพลายเออร์</h5>
+<p>นี่คือ Red Flag สำคัญ ผู้ขายสายไฟรายใหญ่ถือหุ้นบริษัทโดยไม่เปิดเผย การซื้อสายไฟจากเขาจึงเป็นรายการระหว่างกันที่ถูกซ่อนไว้ ต้องตรวจย้อนหลังว่าราคาเป็นตามตลาดหรือไม่ ทางเลือกคือให้เขาถือในชื่อตัวเองและเปิดเผยเป็นรายการเกี่ยวโยงพร้อมมาตรการราคา หรือขายหุ้นออกให้ผู้ก่อตั้งหรือบุคคลภายนอกที่ราคาเหมาะสม</p>
+<h5>4. ผลต่อเกณฑ์</h5>
+<p>หลังแก้ ผู้ก่อตั้งถือ 80% และภรรยา 15% เป็น Strategic Shareholder ติด Silent Period ถ้าเจ้าของซัพพลายเออร์ยังถือ 5% ต้องตรวจว่าเข้านิยามผู้ถือหุ้นเกิน 5% หรือไม่ ไม่ว่ากรณีใด หุ้นที่พนักงานถือแทนไม่สามารถนับเป็น Free Float ได้ ต้องวางแผนขนาด IPO ใหม่</p>`,
+rubric:[["อธิบายผลของ Nominee ต่อการระบุผู้ควบคุมและบุคคลเกี่ยวโยง",2],
+["เสนอวิธีโอนกลับพร้อมหนังสือยืนยันและหลักฐาน",2],
+["มองเห็นว่าหุ้น 5% คือรายการระหว่างกันที่ถูกซ่อน",2],
+["เสนอวิธีจัดการหุ้น 5% และตรวจราคาย้อนหลัง",2],
+["ปรับ Strategic Shareholder, Silent Period และ Free Float ถูกต้อง",2]]},
+
+/* 14 */{topic:"coi", title:"การค้ำประกันและค่าใช้จ่ายส่วนตัว",
+client:"บจก. สยามโพลีเมอร์", biz:"ผลิตเม็ดพลาสติก", target:"SET",
+brief:`<p>DD พบสี่รายการ</p>
+<ol class="plain"><li>บริษัทค้ำประกันเงินกู้ 200 ลบ. ของบริษัทอสังหาฯ ของครอบครัว</li>
+<li>ที่ดินโรงงานของบริษัทจำนองเป็นหลักประกันเงินกู้ของบริษัทอสังหาฯ เดียวกัน</li>
+<li>ผู้ก่อตั้งค้ำประกันส่วนตัวให้เงินกู้ 300 ลบ. ของบริษัท โดยไม่คิดค่าธรรมเนียม</li>
+<li>บริษัทจ่ายบัตรเครดิตส่วนตัวของผู้ก่อตั้งปีละ 0.5 ลบ. บันทึกเป็นค่ารับรอง</li></ol>`,
+tasks:["จัดประเภทแต่ละรายการว่าเป็นปัญหาหรือไม่ เพราะอะไร",
+"วิธีแก้รายการที่เป็นปัญหา",
+"รายการที่ยอมรับได้ต้องทำอะไรเพิ่ม",
+"ระบบควบคุมภายในที่ต้องเพิ่ม"],
+answer:`<h5>1. จัดประเภท</h5>
+<ul><li><b>ข้อ 1 และ 2 — ปัญหาร้ายแรง:</b> บริษัทให้ความช่วยเหลือทางการเงินแก่บุคคลเกี่ยวโยง ความเสี่ยงไหลจากครอบครัวมาที่บริษัท ถ้าบริษัทอสังหาฯ ผิดนัด บริษัทต้องรับภาระหรือเสียที่ดินโรงงาน</li>
+<li><b>ข้อ 3 — ยอมรับได้:</b> ผู้ก่อตั้งช่วยเหลือบริษัท ไม่ใช่บริษัทช่วยผู้ก่อตั้ง</li>
+<li><b>ข้อ 4 — ปัญหา:</b> ค่าใช้จ่ายส่วนตัวที่บริษัทจ่าย บันทึกผิดประเภท และเป็นการถ่ายเทประโยชน์</li></ul>
+<h5>2. วิธีแก้</h5>
+<ul><li>ข้อ 1–2: ให้บริษัทอสังหาฯ หาหลักประกันอื่นหรือรีไฟแนนซ์ ขอธนาคารปลดภาระค้ำประกันและไถ่ถอนจำนองก่อนยื่นไฟลิ่ง</li>
+<li>ข้อ 4: หยุดทันที ผู้ก่อตั้งคืนเงินในส่วนที่เป็นค่าใช้จ่ายส่วนตัว ปรับปรุงการบันทึกบัญชี และพิจารณาผลทางภาษี (ประโยชน์ที่กรรมการได้รับอาจถือเป็นเงินได้)</li></ul>
+<h5>3. รายการที่ยอมรับได้</h5>
+<p>เปิดเผยการค้ำประกันของผู้ก่อตั้งเป็นรายการระหว่างกันในไฟลิ่ง ถ้าจะคิดค่าธรรมเนียมต้องสมเหตุสมผลตามตลาดและผ่านการอนุมัติ หลังเข้าตลาดอาจเจรจาให้ธนาคารยกเลิกการค้ำประกันส่วนตัว</p>
+<h5>4. ระบบควบคุมภายใน</h5>
+<p>นโยบายห้ามบริษัทค้ำประกันหรือให้กู้แก่บุคคลเกี่ยวโยง อำนาจอนุมัติการก่อภาระผูกพันต้องผ่านคณะกรรมการ ระบบเบิกค่าใช้จ่ายที่ต้องมีเอกสารประกอบและผู้อนุมัติที่ไม่ใช่ผู้เบิก และการสอบทานโดยผู้ตรวจสอบภายใน</p>`,
+rubric:[["จัดข้อ 1–2 เป็นความช่วยเหลือทางการเงินแก่บุคคลเกี่ยวโยง",2],
+["จัดข้อ 3 เป็นรายการที่ยอมรับได้ พร้อมเหตุผลทิศทางของประโยชน์",2],
+["ระบุวิธีปลดภาระค้ำประกันและจำนองก่อนยื่น",2],
+["จัดการข้อ 4 ทั้งการคืนเงิน บัญชี และภาษี",2],
+["เสนอระบบควบคุมภายในที่ป้องกันการเกิดซ้ำ",2]]},
+
+/* 15 */{topic:"pre", title:"กองทุน PE กับสิทธิพิเศษในสัญญาผู้ถือหุ้น",
+client:"บจก. กรีนเอนเนอร์ยี่", biz:"ติดตั้งโซลาร์รูฟ", target:"SET",
+brief:`<p>กองทุน PE ลงทุนปี 2567 ได้หุ้น 15% ด้วยเงิน 300 ลบ. สัญญาผู้ถือหุ้นมีเงื่อนไข</p>
+<ol class="plain"><li>สิทธิแต่งตั้งกรรมการ 2 ใน 7 คน</li>
+<li>สิทธิยับยั้ง (Veto) การลงทุนเกิน 50 ลบ. การกู้ยืมใหม่ และการจ่ายเงินปันผล</li>
+<li>Put Option: หากไม่ IPO ภายในปี 2570 ผู้ก่อตั้งต้องซื้อหุ้นคืนที่ทุนบวกผลตอบแทน 10% ต่อปี</li>
+<li>Full Ratchet: หากออกหุ้นใหม่ราคาต่ำกว่าที่กองทุนซื้อ ต้องชดเชยหุ้นให้กองทุน</li>
+<li>Liquidation Preference 1 เท่า</li></ol>`,
+tasks:["สิทธิใดต้องสิ้นสุดก่อนเข้าตลาด เพราะอะไร",
+"สิทธิใดคงอยู่ได้ในรูปแบบอื่น",
+"วิธีจัดทำเอกสารให้สิทธิสิ้นสุด",
+"ผลต่อ Silent Period และการเปิดเผยข้อมูล"],
+answer:`<h5>1. สิทธิที่ต้องสิ้นสุด</h5>
+<p>หลักการคือผู้ถือหุ้นบริษัทจดทะเบียนต้องได้รับการปฏิบัติอย่างเท่าเทียมตามสัดส่วนหุ้น สิทธิพิเศษเหนือผู้ถือหุ้นอื่นจึงต้องสิ้นสุดเมื่อเข้าตลาด</p>
+<ul><li><b>Veto:</b> ขัดกับการตัดสินใจของคณะกรรมการและที่ประชุมผู้ถือหุ้น</li>
+<li><b>Full Ratchet:</b> ถ้าราคา IPO ต่ำกว่าราคาที่กองทุนซื้อ จำนวนหุ้นจะเปลี่ยน ทำให้ทุนและการกระจายหุ้นไม่แน่นอน ต้องยกเลิกก่อนยื่นไฟลิ่ง</li>
+<li><b>Liquidation Preference:</b> สร้างชั้นของผู้ถือหุ้นสามัญที่ไม่เท่ากัน</li>
+<li><b>Put Option:</b> เป็นข้อตกลงระหว่างผู้ถือหุ้นด้วยกัน ไม่ใช่ภาระของบริษัท แต่ควรสิ้นสุดเมื่อ IPO สำเร็จ</li></ul>
+<h5>2. สิทธิที่คงอยู่ได้</h5>
+<p>สิทธิแต่งตั้งกรรมการโดยสัญญาต้องสิ้นสุด แต่กองทุนยังเสนอชื่อกรรมการผ่านการลงมติตามปกติได้ ที่นั่ง 2 ใน 7 มากกว่าสัดส่วนหุ้น 15% จึงควรปรับให้สมเหตุสมผล</p>
+<h5>3. เอกสาร</h5>
+<p>ทำสัญญาแก้ไขหรือยกเลิกข้อตกลงผู้ถือหุ้น มีผลเมื่อยื่นไฟลิ่งหรือเมื่อหุ้นเข้าซื้อขาย และแก้ข้อบังคับบริษัทให้ไม่มีข้อความที่ให้สิทธิพิเศษ</p>
+<h5>4. Silent Period และการเปิดเผย</h5>
+<p>กองทุนถือ 15% เกิน 5% จึงเข้านิยาม Strategic Shareholder ต้องตรวจเกณฑ์ Silent Period ที่ใช้กับกองทุนร่วมลงทุนตามประกาศล่าสุด และเปิดเผยประวัติการลงทุน ราคาที่ซื้อ และสิทธิที่ยกเลิกในไฟลิ่ง เพื่อให้นักลงทุนเทียบกับราคา IPO ได้</p>`,
+rubric:[["ใช้หลักการปฏิบัติต่อผู้ถือหุ้นอย่างเท่าเทียม",2],
+["ระบุว่า Veto, Ratchet และ Liquidation Preference ต้องสิ้นสุด",2],
+["เห็นปัญหาเฉพาะของ Ratchet ต่อจำนวนหุ้นและการกระจายหุ้น",2],
+["แยกได้ว่าที่นั่งกรรมการคงอยู่ผ่านการลงมติตามปกติ",2],
+["ระบุเอกสารยกเลิกสิทธิ Silent Period และการเปิดเผย",2]]},
+
+/* 16 */{topic:"pre", title:"แจกหุ้นราคาพาร์ให้ผู้บริหารก่อน IPO",
+client:"บจก. ดิจิทัลเพย์", biz:"ระบบรับชำระเงินออนไลน์", target:"SET",
+brief:`<p>ปี 2568 บริษัทออกหุ้นใหม่ <b>5 ล้านหุ้น ราคาพาร์ 1 บาท</b> ให้ผู้บริหาร 25 คน โดยไม่มีเงื่อนไขการทำงานต่อ</p>
+<p>รายงานประเมินมูลค่าอิสระในช่วงเวลาเดียวกันประเมินมูลค่ายุติธรรม <b>4.00 บาทต่อหุ้น</b> คาดราคา IPO ปี 2569 ที่ 6.00 บาท</p>
+<p>กำไรสุทธิปี 2568 ก่อนพิจารณารายการนี้ 82 ลบ. ปี 2567 กำไร 70 ลบ.</p>`,
+tasks:["คำนวณค่าใช้จ่ายการจ่ายโดยใช้หุ้นเป็นเกณฑ์ (TFRS 2) และกำไรหลังปรับ",
+"ผลต่อเกณฑ์กำไร SET และสิ่งที่ FA ต้องทำ",
+"ภาระภาษีของผู้บริหาร",
+"ถ้าย้อนเวลาได้ ควรออกแบบแผนอย่างไร"],
+answer:`<h5>1. ค่าใช้จ่ายตาม TFRS 2</h5>
+<p>ส่วนต่าง (4.00 − 1.00) × 5 ล้านหุ้น = <b>15 ลบ.</b> ไม่มีเงื่อนไขการทำงานต่อจึงรับรู้ทั้งหมดในปี 2568 กำไรสุทธิเหลือ 82 − 15 = <b>67 ลบ.</b></p>
+<h5>2. ผลต่อเกณฑ์กำไร</h5>
+<p>กำไรตามงบ 67 ลบ. ต่ำกว่า 75 ลบ. ประเด็นคือตลาดฯ จะถือเป็นรายการที่ไม่ปกติหรือไม่ ซึ่งไม่ควรสันนิษฐานเอาเอง FA ต้องหารือกับตลาดหลักทรัพย์ฯ ล่วงหน้า เตรียมเหตุผลว่าเป็นรายการครั้งเดียว และมีแผนสำรองหากตลาดฯ ไม่ยอมรับ เช่น รอผลปี 2569</p>
+<h5>3. ภาษีผู้บริหาร</h5>
+<p>ประโยชน์ที่ผู้บริหารได้รับ (มูลค่ายุติธรรมเกินราคาที่จ่าย 3 บาทต่อหุ้น) อาจถือเป็นเงินได้จากการจ้างแรงงานในปีที่ได้รับ ต้องคำนวณและหักภาษีให้ถูกต้อง</p>
+<h5>4. ออกแบบใหม่</h5>
+<ul><li>ออกหุ้นเร็วกว่านี้ ในช่วงที่มูลค่าต่ำกว่า หรือขายที่ราคาใกล้มูลค่ายุติธรรม</li>
+<li>กำหนดเงื่อนไขการทำงานต่อ (Vesting) เพื่อกระจายค่าใช้จ่ายและรักษาบุคลากร</li>
+<li>ทำ ESOP หรือ EJIP หลังเข้าตลาดตามเกณฑ์ ก.ล.ต. แทน</li></ul>
+<p>ผู้บริหารที่ได้หุ้นเป็น Strategic Shareholder ติด Silent Period และต้องเปิดเผยราคาที่ได้มาในไฟลิ่ง</p>`,
+rubric:[["คำนวณค่าใช้จ่าย 15 ลบ. และกำไรเหลือ 67 ลบ.",2],
+["ระบุว่ารับรู้ทั้งหมดในปีเพราะไม่มี Vesting",2],
+["เสนอการหารือกับตลาดฯ และแผนสำรอง แทนการสันนิษฐาน",2],
+["ระบุภาระภาษีเงินได้ของผู้บริหาร",2],
+["เสนอการออกแบบที่ดีกว่า (จังหวะ ราคา Vesting ESOP/EJIP)",2]]},
+
+/* 17 */{topic:"coi", title:"บริษัทสิงคโปร์ของลูกชายกินส่วนต่างส่งออก",
+client:"บจก. ไทยรับเบอร์", biz:"ผลิตถุงมือยาง", target:"SET",
+brief:`<p>รายได้ 1,000 ลบ. กำไรสุทธิ 60 ลบ. ยอดส่งออก 60% (600 ลบ.) ขายผ่าน SG Trading Pte. Ltd. ซึ่ง<b>ลูกชายผู้ก่อตั้งถือหุ้น 100%</b></p>
+<p>บริษัทไทยขายให้ SG ที่ต้นทุนบวก 5% แล้ว SG ขายต่อให้ลูกค้าปลายทางที่ราคาสูงกว่าที่ซื้อราว 25% ลูกค้าต่างประเทศทำสัญญากับ SG ไม่ใช่บริษัทไทย</p>`,
+tasks:["ปัญหาของโครงสร้างนี้ (ธุรกิจ ภาษี และ IPO)",
+"ประมาณส่วนต่างที่ไปอยู่ที่ SG",
+"ทางเลือก: ซื้อหุ้น SG / ตั้งบริษัทขายของตัวเองแล้วย้ายลูกค้า / ปรับราคาอย่างเดียว",
+"แนวทางที่แนะนำและงานที่ต้องทำคู่กัน"],
+answer:`<h5>1. ปัญหา</h5>
+<ul><li>COI แนวตั้ง: รายได้ 60% ผ่านบุคคลเกี่ยวโยง บริษัทพึ่งพิงครอบครัวในการเข้าถึงลูกค้า</li>
+<li>ราคาโอน: กำไรถูกย้ายไปไว้นอกประเทศ งบของบริษัทไทยไม่สะท้อนกำไรจริงของธุรกิจ</li>
+<li>ภาษี: กฎหมายราคาโอนกำหนดให้บริษัทที่มีรายได้ตั้งแต่ 200 ลบ. ยื่นแบบรายงานรายการระหว่างกัน และกรมสรรพากรปรับราคาให้เป็นตลาดได้</li></ul>
+<h5>2. ส่วนต่าง</h5>
+<p>SG ซื้อ 600 ลบ. ขายต่อราว 600 × 1.25 = 750 ลบ. ส่วนต่างขั้นต้นประมาณ <b>150 ลบ.</b> ก่อนค่าใช้จ่ายของ SG มากกว่ากำไรสุทธิทั้งปีของบริษัทไทย</p>
+<h5>3. ทางเลือก</h5>
+<ul><li><b>ซื้อหุ้น SG 100%:</b> ได้ลูกค้าและสัญญาทั้งหมดทันที ผลประกอบการรวมภายใต้การควบคุมเดียวกัน ต้องทำ DD ข้ามประเทศ และประเมินมูลค่าอิสระ</li>
+<li><b>ตั้งบริษัทขายของตัวเองแล้วย้ายลูกค้า:</b> ได้โครงสร้างสะอาด แต่ต้องโอนสัญญาลูกค้าทีละราย เสี่ยงลูกค้าหาย และ SG ต้องเลิกกิจการพร้อมสัญญาไม่แข่งขัน</li>
+<li><b>ปรับราคาอย่างเดียว:</b> ยังเหลือการพึ่งพิงและ RPT ขนาดใหญ่ทุกปี ไม่พอสำหรับ IPO</li></ul>
+<h5>4. แนะนำ</h5>
+<p>ซื้อหุ้น SG เข้ากลุ่มในราคาที่มีรายงานประเมินมูลค่ารองรับและชำระเงินจริง ทำเอกสารนโยบายราคาโอนภายในกลุ่ม ตรวจภาษีย้อนหลังของทั้งสองประเทศ และอธิบายในไฟลิ่งว่ากำไรรวมของกลุ่มสะท้อนธุรกิจตลอดช่วงที่ควบคุมร่วมกัน</p>`,
+rubric:[["ระบุทั้ง COI แนวตั้งและการย้ายกำไรออกนอกประเทศ",2],
+["ประมาณส่วนต่างราว 150 ลบ.",2],
+["ระบุประเด็นกฎหมายราคาโอน",2],
+["เปรียบเทียบทั้งสามทางเลือกได้",2],
+["แนะนำแนวทางพร้อมงานคู่กัน (ประเมินมูลค่า นโยบายราคาโอน ภาษีย้อนหลัง)",2]]},
+
+/* 18 */{topic:"ready", title:"รุ่งเรืองค้าส่งกับบัญชีสองชุด",
+client:"บจก. รุ่งเรืองค้าส่ง", biz:"ค้าส่งสินค้าอุปโภคบริโภค", target:"SET ภายใน 2 ปี",
+brief:`<div class="tbl"><table><thead><tr><th>กำไรสุทธิ (ลบ.)</th><th>2566</th><th>2567</th><th>2568</th></tr></thead><tbody>
+<tr><td>งบที่ยื่นกรมสรรพากร</td><td>12</td><td>14</td><td>15</td></tr>
+<tr><td>งบที่ผู้บริหารใช้</td><td>50</td><td>55</td><td>60</td></tr></tbody></table></div>
+<p>ยอดขายเงินสดราว 40% ไม่ได้บันทึกในงบที่ยื่นสรรพากร เจ้าของต้องการใช้ตัวเลขชุดผู้บริหารยื่นไฟลิ่ง</p>`,
+tasks:["ทำไมใช้ตัวเลขชุดผู้บริหารยื่นไฟลิ่งไม่ได้",
+"แผนแก้ปัญหาด้านบัญชีและภาษี",
+"ไทม์ไลน์ที่เป็นไปได้จริงสำหรับ SET และ mai",
+"ระบบควบคุมภายในที่ต้องวาง"],
+answer:`<h5>1. เหตุผล</h5>
+<p>งบที่ใช้ยื่นต้องตรวจสอบโดยผู้สอบบัญชีในรายชื่อ ก.ล.ต. ตามมาตรฐาน PAEs รายได้เงินสดในอดีตที่ไม่มีหลักฐานตรวจสอบไม่ได้ ผู้สอบบัญชีจะไม่แสดงความเห็นหรือถูกจำกัดขอบเขต ซึ่งยื่นไม่ได้ และการมีบัญชีสองชุดคือสัญญาณว่าระบบควบคุมภายในและความซื่อตรงของผู้บริหารมีปัญหา</p>
+<h5>2. แผนแก้</h5>
+<ul><li>เลือก “ปีฐาน” ที่บันทึกรายได้ครบในบัญชีชุดเดียว เช่น เริ่มปี 2569</li>
+<li>ปรึกษาที่ปรึกษาภาษีเรื่องการยื่นแก้ไขย้อนหลัง ชำระภาษีพร้อมเงินเพิ่มและเบี้ยปรับ ประเมินภาระเป็นต้นทุนของการเข้าตลาด</li>
+<li>เปลี่ยนผู้สอบบัญชีเป็นรายในรายชื่อ ก.ล.ต. ตั้งแต่ปีฐาน</li></ul>
+<h5>3. ไทม์ไลน์</h5>
+<ul><li><b>SET</b> ต้องมีผลการดำเนินงาน 3 ปี: งบที่สะอาดปี 2569–2571 ยื่นได้เร็วที่สุดปี 2572 เป้า 2 ปีจึงเป็นไปไม่ได้</li>
+<li><b>mai</b> ต้องมี 2 ปี: งบปี 2569–2570 ยื่นได้ปี 2571</li></ul>
+<p>กำไรจริงราว 60 ลบ. ผ่านเกณฑ์ mai แต่ยังไม่ถึงเกณฑ์ปีล่าสุดของ SET FA ควรบอกตรง ๆ ว่า mai คือเป้าที่สมจริง</p>
+<h5>4. ระบบควบคุม</h5>
+<p>POS ทุกจุดขาย รายงานยอดขายรายวันเทียบกับเงินนำฝาก แยกหน้าที่ผู้รับเงินกับผู้บันทึกบัญชี ตรวจนับเงินสดโดยไม่แจ้งล่วงหน้า ระบบ ERP และผู้ตรวจสอบภายในที่รายงานตรงต่อคณะกรรมการตรวจสอบ</p>`,
+rubric:[["อธิบายว่าผู้สอบบัญชีตรวจรายได้ที่ไม่มีหลักฐานไม่ได้",2],
+["เสนอปีฐานและบัญชีชุดเดียว",2],
+["จัดการภาษีย้อนหลังและเปลี่ยนผู้สอบบัญชี",2],
+["คำนวณไทม์ไลน์ SET และ mai ถูกต้อง และบอกว่าเป้า 2 ปีไม่สมจริง",2],
+["เสนอระบบควบคุมภายในสำหรับธุรกิจเงินสด",2]]},
+
+/* 19 */{topic:"ready", title:"บริษัทครอบครัวที่ยังไม่มีอะไรพร้อม",
+client:"บจก. นครฟาร์มา", biz:"ผลิตยาสามัญ", target:"SET ใน 18 เดือน",
+brief:`<ul class="plain"><li>กรรมการ 5 คน เป็นคนในครอบครัวทั้งหมด ผู้ก่อตั้งเป็นทั้งประธานและ CEO</li>
+<li>ไม่มีกรรมการอิสระและคณะกรรมการตรวจสอบ</li>
+<li>CFO คือภรรยาผู้ก่อตั้ง ไม่มีพื้นฐานบัญชี</li>
+<li>จ้างสำนักงานบัญชีเล็ก ๆ ทำบัญชี ผู้สอบบัญชีไม่อยู่ในรายชื่อ ก.ล.ต.</li>
+<li>ไม่มีผู้ตรวจสอบภายใน ไม่มีนโยบายรายการระหว่างกัน</li>
+<li>ไม่มีกองทุนสำรองเลี้ยงชีพ</li></ul>`,
+tasks:["ระบุสิ่งที่ต้องแก้ตามเกณฑ์ ก.ล.ต. และตลาดฯ",
+"ออกแบบคณะกรรมการชุดใหม่",
+"เรียงลำดับงานใน 18 เดือน ว่าอะไรต้องทำก่อน เพราะอะไร",
+"ความเสี่ยงที่ทำให้ไทม์ไลน์เลื่อน"],
+answer:`<h5>1. สิ่งที่ต้องแก้</h5>
+<ul><li>ประธานกรรมการกับผู้บริหารสูงสุดต้องเป็นคนละคน</li>
+<li>กรรมการอิสระอย่างน้อย 1 ใน 3 และคณะกรรมการตรวจสอบอย่างน้อย 3 คน</li>
+<li>CFO และผู้ควบคุมการทำบัญชีที่มีคุณสมบัติตามเกณฑ์</li>
+<li>ผู้สอบบัญชีในรายชื่อ ก.ล.ต. และงบตามมาตรฐาน PAEs</li>
+<li>ระบบควบคุมภายในและผู้ตรวจสอบภายใน (จ้างภายนอกได้)</li>
+<li>นโยบายรายการระหว่างกันและมาตรการป้องกัน COI</li>
+<li>จัดตั้งกองทุนสำรองเลี้ยงชีพ</li></ul>
+<h5>2. คณะกรรมการชุดใหม่</h5>
+<p>ตัวอย่าง 9 คน: ประธานกรรมการเป็นกรรมการอิสระ หรือผู้ก่อตั้งเป็นประธานแล้วตั้ง CEO คนอื่น กรรมการอิสระ 3–4 คนเป็นกรรมการตรวจสอบ โดยมีอย่างน้อย 1 คนมีความรู้บัญชีการเงิน ที่เหลือเป็นกรรมการจากครอบครัวและผู้บริหาร</p>
+<h5>3. ลำดับงาน</h5>
+<ul><li><b>เดือน 0–3:</b> เปลี่ยนผู้สอบบัญชี จ้าง CFO มืออาชีพ เพราะงบปีปัจจุบันและการบริหารต่อเนื่องอย่างน้อย 1 ปีต้องเริ่มนับทันที</li>
+<li><b>เดือน 3–6:</b> แต่งตั้งกรรมการอิสระและกรรมการตรวจสอบ จ้างผู้ตรวจสอบภายในประเมินระบบ วางนโยบาย</li>
+<li><b>เดือน 6–12:</b> แก้จุดอ่อนการควบคุม แปรสภาพเป็นบริษัทมหาชน ตั้งกองทุนสำรองเลี้ยงชีพ</li>
+<li><b>เดือน 12–18:</b> จัดทำไฟลิ่ง ยื่นต่อ ก.ล.ต. และตลาดฯ</li></ul>
+<h5>4. ความเสี่ยงที่ทำให้เลื่อน</h5>
+<p>ผู้สอบบัญชีใหม่พบรายการต้องปรับปรุงย้อนหลัง หา CFO หรือกรรมการอิสระที่เหมาะสมไม่ได้ ระบบควบคุมยังไม่ผ่าน และกระบวนการพิจารณาของ ก.ล.ต. ใช้เวลาราว 120 + 45 วัน 18 เดือนจึงตึงมาก FA ควรเตือนลูกค้าล่วงหน้า</p>`,
+rubric:[["ระบุเกณฑ์ที่ขาดได้ครบอย่างน้อย 5 ข้อ",2],
+["ออกแบบคณะกรรมการที่ผ่านเกณฑ์อิสระและกรรมการตรวจสอบ",2],
+["จัดลำดับให้ผู้สอบบัญชีและ CFO มาก่อน พร้อมเหตุผล",2],
+["ระบุความต่อเนื่องของผู้บริหารอย่างน้อย 1 ปี",2],
+["ระบุความเสี่ยงต่อไทม์ไลน์และระยะเวลาพิจารณาของ ก.ล.ต.",2]]},
+
+/* 20 */{topic:"plan", title:"แผน IPO สยามแพ็คฟู้ด ตั้งแต่ต้นจนจบ",
+client:"บจก. สยามแพ็คฟู้ด", biz:"ผลิตอาหารพร้อมทาน", target:"SET ปี 2569",
+brief:`<p>ปรับโครงสร้างกลุ่มและแก้ COI เสร็จแล้ว กำไรปกติปี 2567 = 70 ลบ. ปี 2568 = 95 ลบ.</p>
+<div class="tbl"><table><thead><tr><th>ผู้ถือหุ้น</th><th>สัดส่วน</th></tr></thead><tbody>
+<tr><td>ครอบครัว (กรรมการและผู้บริหาร)</td><td>90%</td></tr>
+<tr><td>นาย ก. นักลงทุน (ไม่ใช่กรรมการ)</td><td>6%</td></tr>
+<tr><td>พนักงานทั่วไป 3 คน</td><td>4%</td></tr></tbody></table></div>
+<p>ทุนชำระ 150 ลบ. พาร์ 10 บาท ส่วนผู้ถือหุ้น 420 ลบ. จะเปลี่ยนพาร์เป็น 0.50 บาท เสนอขายเฉพาะหุ้นเพิ่มทุน คาดราคา IPO 4.00 บาท ค่าใช้จ่าย IPO 15 ลบ.</p>`,
+tasks:["เรียงลำดับ Corporate Actions ตั้งแต่วันนี้จนหุ้นเข้าซื้อขาย",
+"คำนวณหุ้นเพิ่มทุน IPO ขั้นต่ำ (มูลค่าพาร์และจำนวนหุ้น)",
+"ตรวจว่าส่วนผู้ถือหุ้นหลัง IPO ผ่านเกณฑ์ SET หรือไม่",
+"คำนวณหุ้นที่ติด Silent Period และจำนวนที่ปลดได้เมื่อครบ 6 เดือน"],
+answer:`<h5>1. ลำดับ Corporate Actions</h5>
+<p>แปรสภาพเป็นบริษัทมหาชน → เปลี่ยนพาร์เป็น 0.50 บาท (150 ลบ. = 300 ล้านหุ้น) → เพิ่มทุนจดทะเบียนเพื่อเสนอขายต่อประชาชน → ปรับคณะกรรมการและตั้งคณะกรรมการชุดย่อย → แต่งตั้ง FA ผู้จัดจำหน่าย และผู้สอบบัญชีในรายชื่อ ก.ล.ต. → ยื่นแบบ 69-1 ต่อ ก.ล.ต. และคำขอจดทะเบียนต่อตลาดฯ → Roadshow, Bookbuilding และกำหนดราคา → จองซื้อและรับชำระเงิน → จดทะเบียนทุนชำระ → หุ้นเข้าซื้อขาย</p>
+<h5>2. หุ้น IPO ขั้นต่ำ</h5>
+<p>นาย ก. ถือ 6% เกิน 5% จึงเป็น Strategic Shareholder Free Float เดิมมีเฉพาะพนักงาน 4% = 6 ลบ. พาร์ ถ้าทุนหลัง IPO ต่ำกว่า 300 ลบ. ต้องมี Free Float ≥ 30% และเสนอขาย ≥ 20%</p>
+<ul><li>Free Float: (6 + X) ÷ (150 + X) ≥ 30% → 0.7X ≥ 39 → X ≥ 55.71</li>
+<li>เสนอขาย: X ÷ (150 + X) ≥ 20% → X ≥ 37.5</li>
+<li>ขั้นต่ำ <b>56 ลบ. พาร์ = 112 ล้านหุ้น</b> ทุนหลัง IPO 206 ลบ. (412 ล้านหุ้น) ยังต่ำกว่า 300 ลบ. จึงใช้ช่วงเกณฑ์ถูก</li>
+<li>ตรวจ: Free Float 62 ÷ 206 = 30.1% · เสนอขาย 56 ÷ 206 = 27.2%</li></ul>
+<h5>3. ส่วนผู้ถือหุ้นหลัง IPO</h5>
+<p>เงินระดมทุน 112 ล้านหุ้น × 4.00 = 448 ลบ. หักค่าใช้จ่าย 15 ลบ. = 433 ลบ. ส่วนผู้ถือหุ้น 420 + 433 = <b>853 ลบ.</b> ผ่านเกณฑ์ 800 ลบ. แต่เผื่อไม่มาก ถ้าราคา IPO ต่ำกว่าราว 3.53 บาท (ต้องได้เงินสุทธิ 380 ลบ.) จะไม่ผ่าน ควรวางแผนเรื่องนี้ก่อนกำหนดช่วงราคา</p>
+<h5>4. Silent Period</h5>
+<ul><li>หุ้นติด Silent Period = 55% × 412 ล้านหุ้น = <b>226.6 ล้านหุ้น</b> (Strategic ถือ 96% × 300 = 288 ล้านหุ้น เพียงพอ)</li>
+<li>ครบ 6 เดือน ปลดได้ 25% × 226.6 = <b>56.65 ล้านหุ้น</b> ส่วนที่เหลือครบ 1 ปี</li></ul>`,
+rubric:[["เรียงลำดับ Corporate Actions ครบและถูกลำดับ",2],
+["ระบุนาย ก. เป็น Strategic Shareholder และใช้เกณฑ์ช่วงทุนต่ำกว่า 300 ลบ.",2],
+["คำนวณ IPO ขั้นต่ำ 56 ลบ. / 112 ล้านหุ้น",2],
+["คำนวณส่วนผู้ถือหุ้นหลัง IPO ราว 853 ลบ. และเห็นความเสี่ยงด้านราคา",2],
+["คำนวณ Silent Period 226.6 ล้านหุ้น และปลด 56.65 ล้านหุ้น",2]]}
+];
+
+{ const order=Object.keys(TOPICS); CASES.sort((a,b)=>order.indexOf(a.topic)-order.indexOf(b.topic)); }
+
+const STORE = "fa-case-room-written-v1";
+const LV = ["ไม่ได้","บางส่วน","ครบ"];
+let S = {ans:{}, rev:{}, grd:{}, cur:0, view:"case"};
+let freshStamp = false, saveTimer = null;
+
+function load(){ try{ const s = JSON.parse(localStorage.getItem(STORE)||"null"); if(s){ S.ans=s.ans||{}; S.rev=s.rev||{}; S.grd=s.grd||{}; S.cur=Math.min(Math.max(s.cur|0,0),CASES.length-1);} }catch(e){} }
+function save(){ try{ localStorage.setItem(STORE, JSON.stringify({ans:S.ans, rev:S.rev, grd:S.grd, cur:S.cur})); }catch(e){} }
+const esc = s => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function caseScore(i){
+  const g = S.grd[i]; const r = CASES[i].rubric;
+  if(!g) return {score:0, graded:false, n:0};
+  let sc = 0, n = 0;
+  r.forEach((it,k)=>{ if(g[k]!=null){ n++; sc += it[1]*g[k]/2; } });
+  return {score:sc, graded:n===r.length, n};
+}
+function status(i){
+  const cs = caseScore(i);
+  if(cs.graded) return {cls:"done", txt:cs.score+"/10"};
+  if((S.ans[i]||"").trim()) return {cls:"wrote", txt:"เขียนแล้ว"};
+  return {cls:"", txt:""};
+}
+function totals(){
+  let wrote=0, graded=0, score=0;
+  CASES.forEach((c,i)=>{ if((S.ans[i]||"").trim()) wrote++; const cs=caseScore(i); if(cs.graded){graded++; score+=cs.score;} });
+  return {wrote, graded, score};
+}
+
+function renderTop(){
+  const t = totals();
+  document.getElementById("stWrote").textContent = t.wrote+"/"+CASES.length;
+  document.getElementById("stScore").textContent = t.graded ? t.score+"/"+(t.graded*10) : "–";
+  document.getElementById("stScoreLbl").textContent = "คะแนน ("+t.graded+" เคส)";
+  document.getElementById("barFill").style.width = (t.graded/CASES.length*100)+"%";
+  document.getElementById("bList").textContent = S.view==="summary" ? "รายการเคส" : "เคส "+(S.cur+1)+"/"+CASES.length;
+  document.getElementById("bPrev").disabled = S.view!=="case" || S.cur===0;
+  document.getElementById("bNext").textContent = S.view==="case" && S.cur===CASES.length-1 ? "สรุปคะแนน" : "ถัดไป";
+  document.getElementById("bNext").disabled = S.view!=="case";
+}
+
+function renderIndex(){
+  let h = `<div class="drawer-head"><b>เคสทั้งหมด</b><button class="btn ghost" id="closeNav">ปิด</button></div>`;
+  for(const t in TOPICS){
+    h += `<div class="grp"><h3>${TOPICS[t]}</h3><ol>`;
+    CASES.forEach((c,i)=>{ if(c.topic!==t) return;
+      const st = status(i), cur = S.view==="case" && S.cur===i;
+      h += `<li><button data-go="${i}" aria-current="${cur}"><span class="n">${i+1}</span><span>${c.title}</span><span class="s ${st.cls}">${st.txt}</span></button></li>`;
+    });
+    h += `</ol></div>`;
+  }
+  h += `<div class="grp"><ol><li><button data-sum aria-current="${S.view==='summary'}"><span class="n">∑</span><span>สรุปคะแนน</span></button></li></ol></div>`;
+  document.getElementById("index").innerHTML = h;
+}
+
+function renderBrief(){
+  const i = S.cur, c = CASES[i];
+  document.getElementById("colA").innerHTML = `
+  <article class="panel">
+    <div class="meta"><span>เคส ${i+1} จาก ${CASES.length}</span><span class="tag">${TOPICS[c.topic]}</span></div>
+    <h2 class="title">${c.title}</h2>
+    <dl class="client"><dt>ลูกค้า</dt><dd>${c.client}</dd><dt>ธุรกิจ</dt><dd>${c.biz}</dd><dt>เป้าหมาย</dt><dd>${c.target}</dd></dl>
+    <div class="brief">${c.brief}</div>
+    <div class="tasks"><h4>สิ่งที่ลูกค้าต้องการจาก FA</h4><ol>${c.tasks.map(t=>`<li>${t}</li>`).join("")}</ol></div>
+    <div class="pager">
+      <button class="btn ghost" data-go="${i-1}" ${i===0?"disabled":""}>เคสก่อนหน้า</button><span class="sp"></span>
+      ${i===CASES.length-1 ? `<button class="btn ghost" data-sum>สรุปคะแนน</button>` : `<button class="btn ghost" data-go="${i+1}">เคสถัดไป</button>`}
+    </div>
+  </article>`;
+}
+
+function renderWork(){
+  const i = S.cur, c = CASES[i];
+  const text = S.ans[i]||"";
+  const rev = !!S.rev[i];
+  const g = S.grd[i]||[];
+  const cs = caseScore(i);
+  let stamp = "";
+  if(rev && cs.graded){
+    const lvl = cs.score>=8 ? "hi" : cs.score>=5 ? "md" : "lo";
+    stamp = `<div class="stamp ${lvl} ${freshStamp?"fresh":""}" aria-hidden="true">${cs.score}/10</div>`;
+  }
+  let model = "";
+  if(rev){
+    const items = c.rubric.map((r,k)=>`
+      <div class="ritem"><p>${r[0]}<small>${r[1]} คะแนน</small></p>
+      <div class="seg" role="group" aria-label="ประเมินข้อ ${k+1}">
+        ${[0,1,2].map(v=>`<button data-r="${k}" data-v="${v}" aria-pressed="${g[k]===v}">${LV[v]}</button>`).join("")}
+      </div></div>`).join("");
+    model = `
+    <section class="model" id="model" aria-live="polite">
+      <p class="lead">แนวคำตอบ</p>
+      ${c.answer}
+    </section>
+    <section class="rubric">
+      <h4>ให้คะแนนตัวเอง</h4>
+      <p class="sub">เทียบคำตอบของคุณกับแต่ละประเด็น “บางส่วน” ได้ครึ่งหนึ่งของคะแนนข้อนั้น</p>
+      ${items}
+      <div class="total"><b>${cs.score}/10</b><span>${cs.graded ? "ประเมินครบแล้ว" : "ประเมินแล้ว "+cs.n+" จาก "+c.rubric.length+" ประเด็น"}</span>${stamp}</div>
+    </section>
+    <div class="acts" style="margin-top:16px">
+      <button class="btn ghost" id="hideAns">ซ่อนเฉลยแล้วเขียนต่อ</button>
+      <button class="btn ghost" id="clearCase">ล้างเคสนี้</button>
+    </div>`;
+  }
+  document.getElementById("colB").innerHTML = `
+  <div class="panel">
+    <h4>บันทึกความเห็นของ FA</h4>
+    <p class="sub">ตอบทุกข้อที่ลูกค้าถาม แสดงการคำนวณและเหตุผลประกอบ</p>
+    <label for="ta" class="sub" style="position:absolute;left:-9999px">คำตอบเคส ${i+1}</label>
+    <textarea id="ta" placeholder="1. ...&#10;2. ...&#10;3. ..." spellcheck="false">${esc(text)}</textarea>
+    <div class="wmeta"><span id="cnt">${text.length.toLocaleString()} ตัวอักษร</span><span id="saved">${text?"บันทึกในเครื่องนี้แล้ว":""}</span></div>
+    ${rev ? "" : `<div class="acts"><button class="btn primary" id="reveal">${text.trim()?"ดูแนวคำตอบและให้คะแนน":"ดูแนวคำตอบ (ยังไม่ได้เขียน)"}</button></div>`}
+    ${model}
+  </div>`;
+  freshStamp = false;
+  autosize(document.getElementById("ta"));
+}
+
+function renderSummary(){
+  const t = totals();
+  let rows = "";
+  for(const k in TOPICS){
+    const idx = CASES.map((c,i)=>i).filter(i=>CASES[i].topic===k);
+    const gIdx = idx.filter(i=>caseScore(i).graded);
+    const sc = gIdx.reduce((a,i)=>a+caseScore(i).score,0);
+    const pct = gIdx.length ? sc/(gIdx.length*10)*100 : 0;
+    rows += `<div class="row"><span>${TOPICS[k]}</span><div class="track"><span style="width:${pct}%"></span></div><b>${gIdx.length? sc+"/"+gIdx.length*10 : "ยังไม่ประเมิน"}</b></div>`;
+  }
+  const list = CASES.map((c,i)=>{
+    const st = status(i);
+    return `<tr><td><button data-go="${i}">${i+1}. ${c.title}</button></td><td>${st.txt||"ยังไม่เริ่ม"}</td></tr>`;
+  }).join("");
+  const weak = CASES.map((c,i)=>i).filter(i=>{const cs=caseScore(i); return cs.graded && cs.score<6;});
+  document.getElementById("colA").innerHTML = `
+  <article class="panel">
+    <div class="meta"><span>สรุปคะแนน</span></div>
+    <div class="big">${t.score}<small> / ${t.graded*10 || 0}</small></div>
+    <p style="margin:0;color:var(--muted)">ประเมินแล้ว ${t.graded} จาก ${CASES.length} เคส · เต็ม 200 คะแนนเมื่อครบทุกเคส${t.graded? " · เฉลี่ย "+(t.score/t.graded).toFixed(1)+"/10":""}</p>
+    <div class="rows">${rows}</div>
+    ${weak.length ? `<p style="margin:0 0 6px"><b>ควรทบทวน (ต่ำกว่า 6/10):</b> ${weak.map(i=>`<button class="btn ghost" style="margin:4px 4px 0 0" data-go="${i}">เคส ${i+1}</button>`).join("")}</p>` : ""}
+    <div class="tbl"><table class="clist"><thead><tr><th>เคส</th><th>สถานะ</th></tr></thead><tbody>${list}</tbody></table></div>
+    <div class="acts" style="margin-top:16px"><button class="btn ghost" id="resetAll">ล้างคำตอบและคะแนนทั้งหมด</button></div>
+    <p class="note" style="margin-top:16px">แนวคำตอบอ้างอิงเกณฑ์ในเอกสารประกอบการสอน BF408 ส่วนประเด็นภาษีและกฎหมายเป็นหลักทั่วไปเพื่อการฝึก ในงานจริงต้องตรวจสอบเกณฑ์ล่าสุดกับที่ปรึกษาภาษีและกฎหมาย</p>
+  </article>`;
+  document.getElementById("colB").innerHTML = "";
+}
+
+function render(){
+  const lay = document.getElementById("layout");
+  lay.classList.toggle("sum", S.view==="summary");
+  document.getElementById("colB").style.display = S.view==="summary" ? "none" : "";
+  renderTop(); renderIndex();
+  if(S.view==="summary") renderSummary(); else { renderBrief(); renderWork(); }
+}
+
+function autosize(ta){ if(!ta) return; ta.style.height="auto"; ta.style.height=Math.max(260, ta.scrollHeight+4)+"px"; }
+function smooth(){ return matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"; }
+
+function go(i){
+  if(i<0||i>=CASES.length) return;
+  S.view="case"; S.cur=i; save(); closeNav(); render();
+  window.scrollTo({top:0, behavior:smooth()});
+  const w = document.getElementById("colB"); if(w) w.scrollTop = 0;
+}
+function openSummary(){ S.view="summary"; closeNav(); render(); window.scrollTo({top:0}); }
+function openNav(){ document.getElementById("index").classList.add("open"); document.getElementById("scrim").classList.add("open"); document.getElementById("menuBtn").setAttribute("aria-expanded","true"); const b=document.getElementById("closeNav"); if(b) b.focus(); }
+function closeNav(){ document.getElementById("index").classList.remove("open"); document.getElementById("scrim").classList.remove("open"); document.getElementById("menuBtn").setAttribute("aria-expanded","false"); }
+
+document.addEventListener("input", e=>{
+  if(e.target.id!=="ta") return;
+  const v = e.target.value; S.ans[S.cur] = v; autosize(e.target);
+  document.getElementById("cnt").textContent = v.length.toLocaleString()+" ตัวอักษร";
+  document.getElementById("saved").textContent = "กำลังบันทึก…";
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>{ save(); const s=document.getElementById("saved"); if(s) s.textContent="บันทึกในเครื่องนี้แล้ว"; renderTop(); renderIndex(); const r=document.getElementById("reveal"); if(r) r.textContent = v.trim()?"ดูแนวคำตอบและให้คะแนน":"ดูแนวคำตอบ (ยังไม่ได้เขียน)"; }, 500);
+});
+
+document.addEventListener("click", e=>{
+  const t = e.target;
+  const g = t.closest("[data-go]"); if(g && !g.disabled){ go(+g.dataset.go); return; }
+  if(t.closest("[data-sum]")){ openSummary(); return; }
+  if(t.closest("#menuBtn")){ openNav(); return; }
+  if(t.closest("#closeNav") || t.id==="scrim"){ closeNav(); return; }
+  if(t.closest("#bList")){ openNav(); return; }
+  if(t.closest("#bPrev")){ go(S.cur-1); return; }
+  if(t.closest("#bNext")){ if(S.cur===CASES.length-1) openSummary(); else go(S.cur+1); return; }
+  if(t.closest("#reveal")){
+    S.rev[S.cur]=true; save(); renderWork(); renderIndex();
+    const m = document.getElementById("model"); if(m) m.scrollIntoView({behavior:smooth(), block:"start"});
+    return;
+  }
+  const r = t.closest("[data-r]");
+  if(r){
+    const k=+r.dataset.r, v=+r.dataset.v;
+    const before = caseScore(S.cur).graded;
+    const arr = S.grd[S.cur] || new Array(CASES[S.cur].rubric.length).fill(null);
+    arr[k]=v; S.grd[S.cur]=arr; save();
+    const after = caseScore(S.cur).graded;
+    if(after && !before) freshStamp = true;
+    const w = document.getElementById("colB"); const st = w.scrollTop, y = window.scrollY;
+    renderWork(); renderIndex(); renderTop();
+    w.scrollTop = st; window.scrollTo(0,y);
+    const nb = document.querySelector(`[data-r="${k}"][data-v="${v}"]`); if(nb) nb.focus({preventScroll:true});
+    return;
+  }
+  if(t.closest("#hideAns")){ S.rev[S.cur]=false; save(); renderWork(); document.getElementById("ta").focus(); return; }
+  if(t.closest("#clearCase")){
+    const b = t.closest("#clearCase");
+    if(b.dataset.armed){ delete S.ans[S.cur]; delete S.rev[S.cur]; delete S.grd[S.cur]; save(); render(); return; }
+    b.dataset.armed="1"; b.textContent="กดอีกครั้งเพื่อยืนยันการล้าง"; setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent="ล้างเคสนี้"; } },3000); return;
+  }
+  if(t.closest("#resetAll")){
+    const b = t.closest("#resetAll");
+    if(b.dataset.armed){ S.ans={}; S.rev={}; S.grd={}; S.cur=0; save(); render(); return; }
+    b.dataset.armed="1"; b.textContent="กดอีกครั้งเพื่อยืนยัน"; setTimeout(()=>{ if(b.isConnected){ delete b.dataset.armed; b.textContent="ล้างคำตอบและคะแนนทั้งหมด"; } },3000); return;
+  }
+});
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeNav(); });
+window.addEventListener("resize", ()=>autosize(document.getElementById("ta")));
+
+load(); render();
+</script>
+</body>
+</html>
